@@ -11,6 +11,7 @@ public class AppConstants {
     public static String RELATIONS = "Relations";
     public static String RELATIONS_BEACON_ID = "beaconID";
     public static String RELATIONS_DECIVE_ID = "deviceID";
+    //Aviv gay
 
 
 }
