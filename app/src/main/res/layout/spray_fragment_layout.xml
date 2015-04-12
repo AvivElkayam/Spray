@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/orange_background">
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="3 New Items"
+        android:id="@+id/button2"
+        android:textColor="#ffffffff"
+        android:background="@drawable/pink_button"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Spray"
+        android:id="@+id/spray_to_button"
+        android:textColor="#ffffffff"
+        android:background="@drawable/pink_button"
+        android:layout_below="@+id/button2"
+        android:layout_alignStart="@+id/button2" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="My location"
+        android:textSize="15dp"
+        android:id="@+id/location_text_view_id"
+        android:layout_marginBottom="35dp"
+        android:layout_above="@+id/button2"
+        android:layout_alignStart="@+id/textView"
+        android:gravity="left|center_vertical" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0 people around you"
+        android:id="@+id/textView"
+        android:textSize="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_above="@+id/button2"
+        android:layout_alignStart="@+id/button2" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/testBTtextView"
+        android:layout_below="@+id/spray_to_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="66dp" />
+</RelativeLayout>
