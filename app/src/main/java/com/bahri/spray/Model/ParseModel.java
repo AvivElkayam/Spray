@@ -1,12 +1,10 @@
 package com.bahri.spray.Model;
 
 import android.bluetooth.BluetoothAdapter;
-import android.content.Intent;
-import android.widget.Toast;
 
+import com.bahri.spray.AppConstants;
 import com.bahri.spray.Controller.LoginActivity;
 import com.bahri.spray.Controller.SignUpActivity;
-import com.bahri.spray.Controller.Welcome;
 import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
@@ -73,7 +71,7 @@ public class ParseModel implements MyModel.ModelInterface {
         ParseUser user = new ParseUser();
         user.setUsername(userName);
         user.setPassword(password);
-        user.put("majorID",cUser+1);
+        user.put(AppConstants.USER_MAJOR_ID,cUser+1);
         user.put("BlueMac",address);
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
@@ -128,12 +126,12 @@ public class ParseModel implements MyModel.ModelInterface {
 
     @Override
     public void updateRelationsInServer(Integer id) {
-        ParseObject relation = new ParseObject("Relations");
-        relation.put("deviceID", ParseUser.getCurrentUser().get("majorID"));
-        relation.put("beaconID", id);
-        ParseObject relation2 = new ParseObject("Relations");
-        relation2.put("beaconID", ParseUser.getCurrentUser().get("majorID"));
-        relation2.put("deviceID", id);
+        ParseObject relation = new ParseObject(AppConstants.RELATIONS);
+        relation.put(AppConstants.RELATIONS_DECIVE_ID, ParseUser.getCurrentUser().get(AppConstants.USER_MAJOR_ID));
+        relation.put(AppConstants.RELATIONS_BEACON_ID, id);
+        ParseObject relation2 = new ParseObject(AppConstants.RELATIONS);
+        relation2.put(AppConstants.RELATIONS_BEACON_ID, ParseUser.getCurrentUser().get(AppConstants.USER_MAJOR_ID));
+        relation2.put(AppConstants.RELATIONS_DECIVE_ID, id);
         relation.saveInBackground();
         relation2.saveInBackground();
     }
