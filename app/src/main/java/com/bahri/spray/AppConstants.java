@@ -5,7 +5,7 @@ package com.bahri.spray;
  */
 public class AppConstants {
     //USER
-
+    public static String USER = "User";
     public static String USER_MAJOR_ID =  "majorID";
     //RELATIONS
     public static String RELATIONS = "Relations";

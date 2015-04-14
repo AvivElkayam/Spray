@@ -149,10 +149,7 @@ public class ParseModel implements MyModel.ModelInterface {
     @Override
     public void deleteRelations() {
 
-
-
         ParseQuery query = new ParseQuery(AppConstants.RELATIONS);
-
         query.whereEqualTo(AppConstants.RELATIONS_DECIVE_ID, ParseUser.getCurrentUser().get(AppConstants.USER_MAJOR_ID));
         query.findInBackground(new FindCallback() {
             @Override
@@ -191,6 +188,47 @@ public class ParseModel implements MyModel.ModelInterface {
                 }
             }
         });
+
+    }
+
+    @Override
+    public void getCloseUsers() {
+        ParseQuery query = new ParseQuery(AppConstants.RELATIONS);
+        query.whereEqualTo(AppConstants.RELATIONS_DECIVE_ID, ParseUser.getCurrentUser().get(AppConstants.USER_MAJOR_ID));
+        query.findInBackground(new FindCallback() {
+            @Override
+            public void done(List list, ParseException e) {
+
+                if (e == null) {
+                    for(int i=0;i<list.size();i++)
+                    {
+                        ParseObject obj =(ParseObject) list.get(i);
+                        ParseUser user = getUserByID((Integer)obj.get(AppConstants.RELATIONS_BEACON_ID));
+                        if (user != null){
+                          MyModel.discoverdUsers.add(user);
+                        }
+
+                    }
+
+
+                } else {
+                }
+
+            }
+        });
+
+    }
+
+    public ParseUser getUserByID(Integer id){
+        final ParseObject[] parseObject = new ParseObject[1];
+        ParseQuery query = new ParseQuery(AppConstants.USER);
+        query.whereEqualTo(AppConstants.USER_MAJOR_ID,id);
+        try {
+            return (ParseUser) query.find().get(0);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
 
     }
 }

@@ -7,6 +7,7 @@ import com.bahri.spray.Controller.LoginActivity;
 import com.bahri.spray.Controller.MainTabActivity;
 import com.bahri.spray.Controller.SignUpActivity;
 import com.bahri.spray.Controller.SprayFragment;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * Created by user on 19/03/2015.
  */
 public class MyModel {
-    public static ArrayList<BluetoothDevice> discoverdDevices;
+    public static ArrayList<ParseUser> discoverdUsers = new ArrayList<ParseUser>();
     private static MyModel ourInstance = new MyModel();
     private ModelInterface model;
     public static MyModel getInstance() {
@@ -39,6 +40,7 @@ public class MyModel {
         public  void setMainTabActivity(MainTabActivity mainTabActivity);
         public void updateRelationsInServer(Integer id);
         public void deleteRelations();
+        public void getCloseUsers();
     }
 
     public  void LoginToSpray(String userName, String password){
@@ -69,5 +71,6 @@ public class MyModel {
     public void setLoginActivity(LoginActivity activity){model.setLoginActivity(activity);}
     public  void setMainTabActivity(MainTabActivity mainTabActivity){model.setMainTabActivity(mainTabActivity);}
     public  void deleteRelations(){model.deleteRelations();}
+    public void getCloseUsers(){model.getCloseUsers();}
 
 }

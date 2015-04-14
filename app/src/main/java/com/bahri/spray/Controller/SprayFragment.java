@@ -50,7 +50,7 @@ public class SprayFragment extends Fragment implements LocationListener {
         public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
             // your implementation here
             String s = device.getName();
-            textView.setText("id:  "+device.getName()+"   "+device.getType());
+            //textView.setText("id:  "+device.getName()+"   "+device.getType());
 
             MyModel.getInstance().updateRelationsInServer(Integer.parseInt(device.getName()));
             Log.w("myApp", "device discoverd: "+device.getName());
@@ -60,6 +60,10 @@ public class SprayFragment extends Fragment implements LocationListener {
     public void startScanAndTransmit()
     {
         mBluetoothAdapter.startLeScan(leScanCallback);
+    }
+    public void updateCloseUsersTextView()
+    {
+        textView.setText("Close users: "+MyModel.discoverdUsers.size());
     }
     private ActionBar actionBar;
     @Override
