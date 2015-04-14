@@ -68,13 +68,13 @@
                 android:value="splitActionBarWhenNarrow" />
         </activity>
         <activity
-            android:name=".Controller.tab_test_activity"
+            android:name=".Controller.MainTabActivity"
             android:label="@string/title_activity_tab_test_activity" >
         </activity>
         <activity
             android:name=".Controller.SprayToActivity"
             android:label="@string/title_activity_spray_to"
-            android:parentActivityName=".Controller.tab_test_activity" >
+            android:parentActivityName=".Controller.MainTabActivity" >
         </activity>
         <activity
             android:name=".Controller.ChooseRecipientActivity"

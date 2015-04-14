@@ -1,13 +1,20 @@
 package com.bahri.spray.Model;
 
 
+import android.bluetooth.BluetoothDevice;
+
 import com.bahri.spray.Controller.LoginActivity;
+import com.bahri.spray.Controller.MainTabActivity;
 import com.bahri.spray.Controller.SignUpActivity;
+import com.bahri.spray.Controller.SprayFragment;
+
+import java.util.ArrayList;
 
 /**
  * Created by user on 19/03/2015.
  */
 public class MyModel {
+    public static ArrayList<BluetoothDevice> discoverdDevices;
     private static MyModel ourInstance = new MyModel();
     private ModelInterface model;
     public static MyModel getInstance() {
@@ -29,7 +36,9 @@ public class MyModel {
         public int UserCounter();
         public void setSignActivity(SignUpActivity signActivity);
         public void setLoginActivity(LoginActivity loginActivity);
+        public  void setMainTabActivity(MainTabActivity mainTabActivity);
         public void updateRelationsInServer(Integer id);
+        public void deleteRelations();
     }
 
     public  void LoginToSpray(String userName, String password){
@@ -48,6 +57,9 @@ public class MyModel {
         model.SignUpToSpray(userName,password);
     }
 
+    public void setSprayFragment(SprayFragment fragment)
+    {}
+
 
     public boolean IsParseUserConnect(){
         return  model.IsParseUserConnect();
@@ -55,5 +67,7 @@ public class MyModel {
     public int UserCounter(){ return  model.UserCounter();}
     public void setSignInActivity(SignUpActivity activity){model.setSignActivity(activity);}
     public void setLoginActivity(LoginActivity activity){model.setLoginActivity(activity);}
+    public  void setMainTabActivity(MainTabActivity mainTabActivity){model.setMainTabActivity(mainTabActivity);}
+    public  void deleteRelations(){model.deleteRelations();}
 
 }

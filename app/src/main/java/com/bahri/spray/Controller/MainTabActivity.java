@@ -14,9 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
 
+import com.bahri.spray.Model.MyModel;
 import com.bahri.spray.R;
 
-public class tab_test_activity extends ActionBarActivity {
+public class MainTabActivity extends ActionBarActivity {
 
     private FragmentTabHost mTabHost;
     private ActionBar actionBar;
@@ -25,16 +26,23 @@ public class tab_test_activity extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
 
+        MyModel.getInstance().setMainTabActivity(this);
         setContentView(R.layout.activity_tab_test_activity);
         initTabs();
 
     }
+    public void startScanAndTransmit()
+    {
+        ( (SprayFragment)getSupportFragmentManager().findFragmentByTag("SprayFragment")).startScanAndTransmit();
+    }
     private void initTabs()
     {
+
         mTabHost = (FragmentTabHost)findViewById(R.id.tabhost1);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
-        mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator("",getResources().getDrawable(R.drawable.spray)),
+
+        mTabHost.addTab(mTabHost.newTabSpec("SprayFragment").setIndicator("", getResources().getDrawable(R.drawable.spray)),
                 SprayFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator("",getResources().getDrawable(R.drawable.media)),
                 MediaFragment.class, null);

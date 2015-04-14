@@ -38,7 +38,7 @@ public class LoginActivity extends ActionBarActivity {
 
             if (MyModel.getInstance().IsParseUserConnect()) {
                 // Send logged in users to Welcome.class
-                Intent intent = new Intent(LoginActivity.this, tab_test_activity.class);
+                Intent intent = new Intent(LoginActivity.this, MainTabActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -89,7 +89,7 @@ public class LoginActivity extends ActionBarActivity {
         // If user exist and authenticated, send user to Welcome.class
         Intent intent = new Intent(
                 LoginActivity.this,
-                Welcome.class);
+                MainTabActivity.class);
         startActivity(intent);
         Toast.makeText(getApplicationContext(),
                 "Successfully Logged in",

@@ -42,8 +42,9 @@ public class SprayFragment extends Fragment implements LocationListener {
     Geocoder geocoder;
     Button sprayButton;
     BluetoothAdapter mBluetoothAdapter;
-    ArrayList<BluetoothDevice> discoverdDevices;
+
     TextView textView;
+
     private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
@@ -51,11 +52,15 @@ public class SprayFragment extends Fragment implements LocationListener {
             String s = device.getName();
             textView.setText("id:  "+device.getName()+"   "+device.getType());
 
-            // MyModel.getInstance().updateRelationsInServer(Integer.parseInt(device.getName()));
+            MyModel.getInstance().updateRelationsInServer(Integer.parseInt(device.getName()));
             Log.w("myApp", "device discoverd: "+device.getName());
 
         }
     };
+    public void startScanAndTransmit()
+    {
+        mBluetoothAdapter.startLeScan(leScanCallback);
+    }
     private ActionBar actionBar;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,11 +73,13 @@ public class SprayFragment extends Fragment implements LocationListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initViews();
-       // initLocation();
+        initLocation();
+        MyModel.getInstance().deleteRelations();
         textView = (TextView)getActivity().findViewById(R.id.testBTtextView);
         initBluetooth();
 
-        mBluetoothAdapter.startLeScan(leScanCallback);
+
+
         Log.w("myApp", "started scanning");
 
 

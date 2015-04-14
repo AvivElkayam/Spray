@@ -4,8 +4,11 @@ import android.bluetooth.BluetoothAdapter;
 
 import com.bahri.spray.AppConstants;
 import com.bahri.spray.Controller.LoginActivity;
+import com.bahri.spray.Controller.MainTabActivity;
 import com.bahri.spray.Controller.SignUpActivity;
+import com.parse.FindCallback;
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -13,12 +16,15 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import java.util.List;
+
 /**
  * Created by user on 19/03/2015.
  */
 public class ParseModel implements MyModel.ModelInterface {
     SignUpActivity signUpActivity;
     LoginActivity loginActivity;
+    MainTabActivity mainTabActivity;
     String address;
     BluetoothAdapter mBluetoothAdapter;
     boolean success;
@@ -124,6 +130,10 @@ public class ParseModel implements MyModel.ModelInterface {
         this.loginActivity = loginActivity;
     }
 
+    public  void setMainTabActivity(MainTabActivity mainTabActivity){
+        this.mainTabActivity = mainTabActivity;
+    }
+
     @Override
     public void updateRelationsInServer(Integer id) {
         ParseObject relation = new ParseObject(AppConstants.RELATIONS);
@@ -134,5 +144,53 @@ public class ParseModel implements MyModel.ModelInterface {
         relation2.put(AppConstants.RELATIONS_DECIVE_ID, id);
         relation.saveInBackground();
         relation2.saveInBackground();
+    }
+
+    @Override
+    public void deleteRelations() {
+
+
+
+        ParseQuery query = new ParseQuery(AppConstants.RELATIONS);
+
+        query.whereEqualTo(AppConstants.RELATIONS_DECIVE_ID, ParseUser.getCurrentUser().get(AppConstants.USER_MAJOR_ID));
+        query.findInBackground(new FindCallback() {
+            @Override
+            public void done(List list, ParseException e) {
+                if (e == null) {
+                    for(int i=0;i<list.size();i++)
+                    {
+                        ParseObject obj =(ParseObject) list.get(i);
+                        obj.deleteInBackground();
+                    }
+
+                    ParseQuery query2 = new ParseQuery(AppConstants.RELATIONS);
+
+                    query2.whereEqualTo(AppConstants.RELATIONS_BEACON_ID, ParseUser.getCurrentUser().get(AppConstants.USER_MAJOR_ID));
+                    query2.findInBackground(new FindCallback() {
+                        @Override
+                        public void done(List list, ParseException e) {
+                            if (e == null) {
+                                for(int i=0;i<list.size();i++)
+                                {
+                                    ParseObject obj =(ParseObject) list.get(i);
+                                    obj.deleteInBackground();
+                                }
+                                mainTabActivity.startScanAndTransmit();
+                            } else {
+                            }
+                        }
+                    });
+
+
+
+
+
+
+                } else {
+                }
+            }
+        });
+
     }
 }
