@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +44,7 @@ public class MediaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setTitle("Media");
-
+        chageActionBarStyle();
         mTabHost = new FragmentTabHost(getActivity());
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.media_tab_host);
         mTabHost.addTab(mTabHost.newTabSpec("Current").setIndicator("Current"),
@@ -71,13 +76,24 @@ public class MediaFragment extends Fragment {
 
     }
         //return  inflater.inflate(R.layout.fragment_media_layout, container, false);    }
+        public void chageActionBarStyle()
+        {
+            ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+            SpannableString spannableString = new SpannableString("Media");
+            spannableString.setSpan(new ForegroundColorSpan(Color.RED), 0, spannableString.toString()
+                    .length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            actionBar.setDisplayShowHomeEnabled(true);
+            // getSupportActionBar().setIcon(R.drawable.ic_launcher);
+            actionBar.setTitle(spannableString);
 
+        }
 
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().getWindow().setUiOptions(ActivityInfo.UIOPTION_SPLIT_ACTION_BAR_WHEN_NARROW);
+        getActivity().setTitle("Media");
+
 
     }
     private View initTabs()

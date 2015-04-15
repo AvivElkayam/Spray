@@ -69,7 +69,8 @@
         </activity>
         <activity
             android:name=".Controller.MainTabActivity"
-            android:label="@string/title_activity_tab_test_activity" >
+            android:label="@string/title_activity_tab_test_activity"
+            android:theme="@style/SprayTheme">
         </activity>
         <activity
             android:name=".Controller.SprayToActivity"

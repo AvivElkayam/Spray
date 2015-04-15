@@ -5,12 +5,16 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ParcelUuid;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bahri.spray.Model.MyModel;
 import com.bahri.spray.Model.ParseModel;
@@ -32,17 +37,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Created by mac on 3/29/15.
  */
 public class SprayFragment extends Fragment implements LocationListener {
     LocationManager locationManager;
-    TextView locationTextView;
+    TextView locationTextView,closeUsersTextView;
     Geocoder geocoder;
-    Button sprayButton;
+    Button sprayButton,scanButton;
     BluetoothAdapter mBluetoothAdapter;
-
+    BluetoothDevice device;
     TextView textView;
 
     private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
@@ -52,23 +58,53 @@ public class SprayFragment extends Fragment implements LocationListener {
             String s = device.getName();
             //textView.setText("id:  "+device.getName()+"   "+device.getType());
 
+            //MyModel.getInstance().updateRelationsInServer(Integer.parseInt(device.getName()));
+            if(device.getName()!=null)
             MyModel.getInstance().updateRelationsInServer(Integer.parseInt(device.getName()));
-            Log.w("myApp", "device discoverd: "+device.getName());
+            Log.w("myApp", "device discoverd: "+device.getName()+" "+device.getUuids());
+            ParcelUuid[] p = device.getUuids();
+            textView.setText("discoverd: "+device.getName()+" "+device.getAddress()
+            );
 
         }
     };
+    public  void display(){
+        Toast.makeText(getActivity(),"device discoverd: "+device.getName(),Toast.LENGTH_SHORT).show();
+
+    }
     public void startScanAndTransmit()
     {
-        mBluetoothAdapter.startLeScan(leScanCallback);
+        UUID[] uuids = new UUID[1];
+        uuids[0] = UUID.fromString("11DA3FD1-7E10-41C1-B16F-4430B506CDE7");
+
+        mBluetoothAdapter.startLeScan(uuids,leScanCallback);
+        //mBluetoothAdapter.startLeScan(leScanCallback);
+        Log.w("startedScanning","Started Scaninng");
+//        new Thread() {
+//            public void run() {
+//                /* block of code which need to execute via thread */
+//                for (int i=0;i<3;i++)
+//                {
+//
+//                    try {
+//                        MyModel.getInstance().getCloseUsers();
+//                        sleep(4000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }.start();
     }
     public void updateCloseUsersTextView()
     {
-        textView.setText("Close users: "+MyModel.discoverdUsers.size());
+        closeUsersTextView.setText(MyModel.discoverdUsers.size() + " People around you");
     }
     private ActionBar actionBar;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getActivity().setTitle("Spray");
+
+        getActivity().setTitleColor(Color.WHITE);
 
         return inflater.inflate(R.layout.spray_fragment_layout,container,false);
     }
@@ -81,7 +117,10 @@ public class SprayFragment extends Fragment implements LocationListener {
         MyModel.getInstance().deleteRelations();
         textView = (TextView)getActivity().findViewById(R.id.testBTtextView);
         initBluetooth();
-
+        getActivity().setTitleColor(Color.WHITE);
+        getActivity().setTitle("Spray");
+       // MyModel.getInstance().updateRelationsInServer(77);
+        //getActivity().getActionBar().getCustomView().setBackground(getResources().getDrawable(R.drawable.orange_background));
 
 
         Log.w("myApp", "started scanning");
@@ -105,27 +144,24 @@ public class SprayFragment extends Fragment implements LocationListener {
     public void initViews()
     {
         locationTextView = (TextView) getActivity().findViewById(R.id.location_text_view_id);
+        closeUsersTextView = (TextView)getActivity().findViewById(R.id.close_users_text_view);
         sprayButton = (Button)getActivity().findViewById(R.id.spray_to_button);
         sprayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SprayToActivity.class);
                 startActivity(intent);
-                // Create new fragment and transaction
-                // Create new fragment and transaction
-//                Fragment newFragment = new SprayToFragment();
-//                // consider using Java coding conventions (upper first char class names!!!)
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//
-//                // Replace whatever is in the fragment_container view with this fragment,
-//                // and add the transaction to the back stack
-//                transaction.replace(R.id.pager, newFragment);
-//                transaction.addToBackStack("replaceSpray");
-//
-//                // Commit the transaction
-//                transaction.commit();
+                mBluetoothAdapter.stopLeScan(leScanCallback);
             }
         });
+        scanButton = (Button)getActivity().findViewById(R.id.scan_button);
+        scanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyModel.getInstance().getCloseUsers();
+            }
+        });
+
     }
     public void initLocation()
     {
@@ -175,5 +211,9 @@ public class SprayFragment extends Fragment implements LocationListener {
        Log.d("Latitude","status");
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mBluetoothAdapter.startLeScan(leScanCallback);
+    }
 }
