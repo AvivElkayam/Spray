@@ -82,7 +82,7 @@ public class MediaFragment extends Fragment {
             SpannableString spannableString = new SpannableString("Media");
             spannableString.setSpan(new ForegroundColorSpan(Color.RED), 0, spannableString.toString()
                     .length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            actionBar.setDisplayShowHomeEnabled(true);
+            //actionBar.setDisplayShowHomeEnabled(true);
             // getSupportActionBar().setIcon(R.drawable.ic_launcher);
             actionBar.setTitle(spannableString);
 

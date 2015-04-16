@@ -35,13 +35,6 @@ public class MainTabActivity extends ActionBarActivity {
         setContentView(R.layout.activity_tab_test_activity);
         initTabs();
         actionBar=getSupportActionBar();
-//        int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
-//        TextView abTitle = (TextView) findViewById(titleId);
-//        abTitle.setTextColor(Color.WHITE);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        chageActionBarStyle();
-        //actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.orange_background));
-
 
 
 
@@ -51,7 +44,7 @@ public class MainTabActivity extends ActionBarActivity {
         SpannableString spannableString = new SpannableString(getString(R.string.app_name));
         spannableString.setSpan(new ForegroundColorSpan(Color.RED), 0, spannableString.toString()
                 .length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
         // getSupportActionBar().setIcon(R.drawable.ic_launcher);
         getSupportActionBar().setTitle(spannableString);
     }
