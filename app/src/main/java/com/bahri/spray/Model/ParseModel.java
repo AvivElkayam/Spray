@@ -140,6 +140,18 @@ public class ParseModel implements MyModel.ModelInterface {
         checkIfRelationExist(id);
 
     }
+    public boolean checkIfUserExist(Integer id)
+    {
+        boolean exist = false;
+        for(ParseUser user : MyModel.discoverdUsers)
+        {
+            if(user.get(AppConstants.USER_MAJOR_ID)==id)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public void checkIfRelationExist(final Integer id)
     {
         ParseQuery query = new ParseQuery(AppConstants.RELATIONS);
@@ -239,7 +251,9 @@ public class ParseModel implements MyModel.ModelInterface {
                         ParseObject obj = (ParseObject) list.get(i);
                         ParseUser user = getUserByID((Integer) obj.get(AppConstants.RELATIONS_BEACON_ID));
                         if (user != null) {
-                            MyModel.discoverdUsers.add(user);
+                            if(!checkIfUserExist((Integer)user.get(AppConstants.USER_MAJOR_ID))) {
+                                MyModel.discoverdUsers.add(user);
+                            }
                         }
 
                     }
