@@ -3,6 +3,7 @@ package com.bahri.spray.Controller;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,14 +62,32 @@ public class SprayFragment extends Fragment implements LocationListener {
 
             //MyModel.getInstance().updateRelationsInServer(Integer.parseInt(device.getName()));
             if(device.getName()!=null)
-            MyModel.getInstance().updateRelationsInServer(Integer.parseInt(device.getName()));
-            Log.w("myApp", "device discoverd: "+device.getName()+" "+device.getUuids());
-            ParcelUuid[] p = device.getUuids();
-            textView.setText("discoverd: "+device.getName()+" "+device.getAddress()
-            );
+            {
+                if(!checkIfUserExistInLocalArray(Integer.parseInt(device.getName())))
+                {
+                    MyModel.discoverdUsersIDSLocalArray.add(Integer.parseInt(device.getName()));
+                    MyModel.getInstance().updateRelationsInServer(Integer.parseInt(device.getName()));
+                    Log.w("myApp", "device discoverd: "+device.getName()+" "+device.getUuids());
+                    ParcelUuid[] p = device.getUuids();
+                    textView.setText("discoverd: "+device.getName()+" "+device.getAddress()
+                    );
+                }
+            }
+
 
         }
     };
+    private boolean checkIfUserExistInLocalArray(Integer id)
+    {
+        for(Integer id1 :MyModel.discoverdUsersIDSLocalArray)
+        {
+            if(id1==id)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public  void display(){
         Toast.makeText(getActivity(),"device discoverd: "+device.getName(),Toast.LENGTH_SHORT).show();
 
@@ -117,9 +137,12 @@ public class SprayFragment extends Fragment implements LocationListener {
         MyModel.getInstance().deleteRelations();
         textView = (TextView)getActivity().findViewById(R.id.testBTtextView);
         initBluetooth();
-        getActivity().setTitleColor(Color.WHITE);
-        getActivity().setTitle("Spray");
-       // MyModel.getInstance().updateRelationsInServer(77);
+
+//        getActivity().setTitleColor(Color.WHITE);
+//        getActivity().setTitle("Spray");
+                ((ActionBarActivity) getActivity()).getSupportActionBar().hide();
+
+        // MyModel.getInstance().updateRelationsInServer(77);
         //getActivity().getActionBar().getCustomView().setBackground(getResources().getDrawable(R.drawable.orange_background));
 
 

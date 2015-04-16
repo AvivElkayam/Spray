@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class MyModel {
     public static ArrayList<ParseUser> discoverdUsers = new ArrayList<ParseUser>();
-    public static ArrayList<Integer> discoverdUsersIDSLocalArray = new ArrayList<Integer>()
+    public static ArrayList<Integer> discoverdUsersIDSLocalArray = new ArrayList<Integer>();
     private static MyModel ourInstance = new MyModel();
     private ModelInterface model;
     public static MyModel getInstance() {

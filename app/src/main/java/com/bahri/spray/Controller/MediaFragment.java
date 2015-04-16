@@ -44,7 +44,8 @@ public class MediaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setTitle("Media");
-        chageActionBarStyle();
+        ((ActionBarActivity)getActivity()).getSupportActionBar().show();
+
         mTabHost = new FragmentTabHost(getActivity());
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.media_tab_host);
         mTabHost.addTab(mTabHost.newTabSpec("Current").setIndicator("Current"),
@@ -76,7 +77,7 @@ public class MediaFragment extends Fragment {
 
     }
         //return  inflater.inflate(R.layout.fragment_media_layout, container, false);    }
-        public void chageActionBarStyle()
+        public void changeActionBarStyle()
         {
             ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
             SpannableString spannableString = new SpannableString("Media");

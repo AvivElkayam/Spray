@@ -56,17 +56,17 @@ public class ChooseRecipientActivity extends ActionBarActivity {
     }
 
     private void initViews() {
-        ParseUser user1 = new ParseUser();
-        user1.setUsername("Aviv");
-
-        ParseUser user2 = new ParseUser();
-        user2.setUsername("Raz");
-
-        ParseUser user3 = new ParseUser();
-        user3.setUsername("Amir");
-        MyModel.discoverdUsers.add(user1);
-        MyModel.discoverdUsers.add(user2);
-        MyModel.discoverdUsers.add(user3);
+//        ParseUser user1 = new ParseUser();
+//        user1.setUsername("Aviv");
+//
+//        ParseUser user2 = new ParseUser();
+//        user2.setUsername("Raz");
+//
+//        ParseUser user3 = new ParseUser();
+//        user3.setUsername("Amir");
+//        MyModel.discoverdUsers.add(user1);
+//        MyModel.discoverdUsers.add(user2);
+//        MyModel.discoverdUsers.add(user3);
         myArrayAdapter = new CloseUsersArrayAdapter();
         closeUsersListView = (ListView)findViewById(R.id.choose_recipient_list_view);
         closeUsersListView.setAdapter(myArrayAdapter);
