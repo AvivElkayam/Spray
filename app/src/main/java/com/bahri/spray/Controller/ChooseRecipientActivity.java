@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -36,6 +38,7 @@ public class ChooseRecipientActivity extends ActionBarActivity {
     ArrayAdapter<ParseUser> myArrayAdapter;
     Spinner spinner;
     ArrayList<Integer> imagesArray = new ArrayList<Integer>();
+    ArrayList<Integer> chosenUsersIndexArray = new ArrayList<Integer>();
     int[] images = {
             R.drawable.group,
             R.drawable.media,
@@ -74,7 +77,7 @@ public class ChooseRecipientActivity extends ActionBarActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
             ParseUser user = (ParseUser)closeUsersListView.getItemAtPosition(position);
 
@@ -85,6 +88,20 @@ public class ChooseRecipientActivity extends ActionBarActivity {
             ParseUser parseUser = MyModel.discoverdUsers.get(position);
             TextView nameTextView = (TextView)itemView.findViewById(R.id.choose_recipient_cell_name_text_view);
             nameTextView.setText(user.getUsername());
+            CheckBox checkBox = (CheckBox)itemView.findViewById(R.id.choose_recipient_cell_check_box);
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked)
+                    {
+                        chosenUsersIndexArray.add(position,position);
+                    }
+                    else
+                    {
+                        chosenUsersIndexArray.remove(position);
+                    }
+                }
+            });
             return itemView;
         }
     }

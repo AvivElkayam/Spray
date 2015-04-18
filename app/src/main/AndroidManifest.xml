@@ -10,7 +10,12 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- Declaration that this app is usable on phones with Bluetooth Low Energy. -->
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -38,6 +43,7 @@
         <activity
             android:name=".Controller.MainActivity"
             android:label="@string/title_activity_main"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light" >
         </activity>
         <activity
@@ -70,7 +76,8 @@
         <activity
             android:name=".Controller.MainTabActivity"
             android:label="@string/title_activity_tab_test_activity"
-            android:theme="@style/SprayTheme">
+            android:screenOrientation="portrait"
+            android:theme="@style/SprayTheme" >
         </activity>
         <activity
             android:name=".Controller.SprayToActivity"
@@ -80,7 +87,15 @@
         <activity
             android:name=".Controller.ChooseRecipientActivity"
             android:label="@string/title_activity_choose_recipient"
-            android:parentActivityName=".Controller.SprayToActivity">
+            android:parentActivityName=".Controller.SprayToActivity" >
+        </activity>
+        <activity
+            android:name=".Controller.SprayMediaActivity"
+            android:label="@string/title_activity_spray_to_all" >
+        </activity>
+        <activity
+            android:name=".Controller.SprayToGroupActivity"
+            android:label="@string/title_activity_spray_to_group" >
         </activity>
     </application>
 

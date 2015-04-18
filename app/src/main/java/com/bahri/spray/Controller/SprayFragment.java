@@ -118,7 +118,8 @@ public class SprayFragment extends Fragment implements LocationListener {
     }
     public void updateCloseUsersTextView()
     {
-        closeUsersTextView.setText(MyModel.discoverdUsers.size() + " People around you");
+        closeUsersTextView.setText(MyModel.discoverdUsersIDSLocalArray.size() + " People around you");
+
     }
     private ActionBar actionBar;
     @Override
@@ -138,12 +139,6 @@ public class SprayFragment extends Fragment implements LocationListener {
         textView = (TextView)getActivity().findViewById(R.id.testBTtextView);
         initBluetooth();
 
-//        getActivity().setTitleColor(Color.WHITE);
-//        getActivity().setTitle("Spray");
-                ((ActionBarActivity) getActivity()).getSupportActionBar().hide();
-
-        // MyModel.getInstance().updateRelationsInServer(77);
-        //getActivity().getActionBar().getCustomView().setBackground(getResources().getDrawable(R.drawable.orange_background));
 
 
         Log.w("myApp", "started scanning");
@@ -162,6 +157,8 @@ public class SprayFragment extends Fragment implements LocationListener {
         if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, 1);
+
+
         }
     }
     public void initViews()
@@ -238,5 +235,6 @@ public class SprayFragment extends Fragment implements LocationListener {
     public void onResume() {
         super.onResume();
         mBluetoothAdapter.startLeScan(leScanCallback);
+        Log.w("s","OnnnnnnnResume");
     }
 }

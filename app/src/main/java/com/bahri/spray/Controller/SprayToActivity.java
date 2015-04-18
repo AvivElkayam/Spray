@@ -24,14 +24,16 @@ public class SprayToActivity extends ActionBarActivity {
         sprayToAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(SprayToActivity.this,SprayMediaActivity.class);
+                startActivity(intent);
             }
         });
         sprayToGroupButton = (Button)findViewById(R.id.spray_to_group_button);
         sprayToGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(SprayToActivity.this,SprayToGroupActivity.class);
+                startActivity(intent);
             }
         });
         chooseRecipientButton = (Button)findViewById(R.id.choose_recipient_button);

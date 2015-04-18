@@ -181,7 +181,7 @@ public class ParseModel implements MyModel.ModelInterface {
                         relation2.put(AppConstants.RELATIONS_DECIVE_ID, id);
                         relation.saveInBackground();
                         relation2.saveInBackground();
-
+                        getCloseUsers();
                     }
 
                 } else {

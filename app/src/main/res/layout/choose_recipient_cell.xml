@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="50dp">
+
+    <CheckBox
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/choose_recipient_cell_check_box"
+        android:singleLine="true"
+        android:layout_weight="4"
+        android:layout_marginLeft="20dp" />
 
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="60dp"
+        android:layout_height="fill_parent"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/choose_recipient_cell_name_text_view"
-        android:gravity="center_vertical" />
+        android:gravity="center_vertical"
+        android:layout_weight="1" />
+
 </LinearLayout>
