@@ -23,6 +23,7 @@ public class SprayToActivity extends ActionBarActivity {
         getSupportActionBar().setTitle("Spray To");
         setContentView(R.layout.activity_spray_to_layout);
         initViews();
+        //raz
     }
     public void initViews()
     {
