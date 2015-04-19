@@ -12,7 +12,8 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- Declaration that this app is usable on phones with Bluetooth Low Energy. -->
@@ -25,10 +26,6 @@
     <service
         android:name="com.estimote.sdk.service.BeaconService"
         android:exported="false" />
-
-
-
-
 
     <application
         android:name=".Model.ParseApplication"
@@ -80,7 +77,7 @@
             android:name=".Controller.SprayToActivity"
             android:label="@string/title_activity_spray_to"
             android:parentActivityName=".Controller.MainTabActivity"
-            android:theme="@style/SprayTheme">
+            android:theme="@style/SprayTheme" >
         </activity>
         <activity
             android:name=".Controller.ChooseRecipientActivity"
@@ -94,6 +91,10 @@
         <activity
             android:name=".Controller.SprayToGroupActivity"
             android:label="@string/title_activity_spray_to_group" >
+        </activity>
+        <activity
+            android:name=".Controller.ImagePreviewActivity"
+            android:label="@string/title_activity_image_preview" >
         </activity>
     </application>
 

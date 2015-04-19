@@ -18,7 +18,6 @@ public class SprayMediaActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(getString(R.string.orangeColor))));
-
         setContentView(R.layout.activity_spray_media_layout);
         initTabs();
     }
@@ -26,7 +25,6 @@ public class SprayMediaActivity extends ActionBarActivity {
     private void initTabs()
     {
         setTitle("Spray To All");
-
         mTabHost = (FragmentTabHost)findViewById(R.id.spray_to_all_tab_host);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.spray_to_all_tabs_container);
         mTabHost.addTab(mTabHost.newTabSpec("Image").setIndicator("Image"),
@@ -51,8 +49,6 @@ public class SprayMediaActivity extends ActionBarActivity {
 
             }
         });
-
-
         //return mTabHost;
     }
     @Override

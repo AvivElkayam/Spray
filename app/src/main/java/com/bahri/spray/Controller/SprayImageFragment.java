@@ -25,6 +25,7 @@ import com.bahri.spray.Model.MyModel;
 import com.bahri.spray.R;
 import com.parse.ParseUser;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -106,7 +107,7 @@ public class SprayImageFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
             if (requestCode == 1) {
-                //from library
+                //from camera
                 File f = new File(Environment.getExternalStorageDirectory().toString());
                 for (File temp : f.listFiles()) {
                     if (temp.getName().equals("temp.jpg")) {
@@ -122,7 +123,7 @@ public class SprayImageFragment extends Fragment {
                             bitmapOptions);
 
                     imageView.setImageBitmap(bitmap);
-
+                    putBitmapToIntentAndStartActivity(bitmap);
                     String path = android.os.Environment
                             .getExternalStorageDirectory()
                             + File.separator
@@ -156,7 +157,7 @@ public class SprayImageFragment extends Fragment {
                 c.close();
                 Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
                 imageView.setImageBitmap(thumbnail);
-
+                putBitmapToIntentAndStartActivity(thumbnail);
 
             }
 
@@ -186,5 +187,27 @@ public class SprayImageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return  inflater.inflate(R.layout.fragment_spray_image_layout, container, false);
     }
+    private void putBitmapToIntentAndStartActivity(Bitmap bitmap)
+    {
+        Intent i = new Intent(getActivity(), ImagePreviewActivity.class);
+        Bitmap b=scaleDown(bitmap,400,true); // your bitmap
+        ByteArrayOutputStream bs = new ByteArrayOutputStream();
+        b.compress(Bitmap.CompressFormat.PNG, 50, bs);
+        i.putExtra("imageByteArray", bs.toByteArray());
+        startActivity(i);
 
+
+    }
+    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize,
+                                   boolean filter) {
+        float ratio = Math.min(
+                (float) maxImageSize / realImage.getWidth(),
+                (float) maxImageSize / realImage.getHeight());
+        int width = Math.round((float) ratio * realImage.getWidth());
+        int height = Math.round((float) ratio * realImage.getHeight());
+
+        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
+                height, filter);
+        return newBitmap;
+    }
 }
