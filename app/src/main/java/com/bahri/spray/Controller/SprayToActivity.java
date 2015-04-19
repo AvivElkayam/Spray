@@ -1,8 +1,12 @@
 package com.bahri.spray.Controller;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +19,8 @@ public class SprayToActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(getString(R.string.orangeColor))));
+        getSupportActionBar().setTitle("Spray To");
         setContentView(R.layout.activity_spray_to_layout);
         initViews();
     }
@@ -46,6 +52,7 @@ public class SprayToActivity extends ActionBarActivity {
                 overridePendingTransition(R.anim.abc_slide_in_bottom, R.anim.abc_slide_in_top);
             }
         });
+
 
     }
 

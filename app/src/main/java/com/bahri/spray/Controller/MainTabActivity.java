@@ -30,12 +30,12 @@ public class MainTabActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(getString(R.string.orangeColor))));
         MyModel.getInstance().setMainTabActivity(this);
         setContentView(R.layout.activity_tab_test_activity);
         initTabs();
         actionBar=getSupportActionBar();
-
+        setTitleColor(Color.WHITE);
 
 
     }

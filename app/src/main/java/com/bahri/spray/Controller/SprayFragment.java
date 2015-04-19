@@ -48,6 +48,7 @@ public class SprayFragment extends Fragment implements LocationListener {
     LocationManager locationManager;
     TextView locationTextView,closeUsersTextView;
     Geocoder geocoder;
+    String locationText = "My Location";
     Button sprayButton,scanButton;
     BluetoothAdapter mBluetoothAdapter;
     BluetoothDevice device;
@@ -125,8 +126,8 @@ public class SprayFragment extends Fragment implements LocationListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        getActivity().setTitleColor(Color.WHITE);
 
+        getActivity().setTitle("Spray");
         return inflater.inflate(R.layout.spray_fragment_layout,container,false);
     }
 
@@ -139,7 +140,7 @@ public class SprayFragment extends Fragment implements LocationListener {
         textView = (TextView)getActivity().findViewById(R.id.testBTtextView);
         initBluetooth();
 
-
+        getActivity().setTitleColor(Color.WHITE);
 
         Log.w("myApp", "started scanning");
 
@@ -164,7 +165,9 @@ public class SprayFragment extends Fragment implements LocationListener {
     public void initViews()
     {
         locationTextView = (TextView) getActivity().findViewById(R.id.location_text_view_id);
+        locationText = locationText;
         closeUsersTextView = (TextView)getActivity().findViewById(R.id.close_users_text_view);
+        closeUsersTextView.setText(MyModel.discoverdUsersIDSLocalArray.size() + " People around you");
         sprayButton = (Button)getActivity().findViewById(R.id.spray_to_button);
         sprayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,11 +212,11 @@ public class SprayFragment extends Fragment implements LocationListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-                locationTextView.setText(
+                locationText =
                         addresses.get(0).getThoroughfare() + " "
                                 + addresses.get(0).getSubThoroughfare() + ", "
-                                + addresses.get(0).getLocality());
+                                + addresses.get(0).getLocality();
+                locationTextView.setText(locationText);
 
     }
     @Override

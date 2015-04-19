@@ -95,6 +95,7 @@ public class LoginActivity extends ActionBarActivity {
                 "Successfully Logged in",
                 Toast.LENGTH_LONG).show();
         finish();
+
     }
 
     public void loginErr(){

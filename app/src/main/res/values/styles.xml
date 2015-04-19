@@ -1,15 +1,24 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="SprayTheme" parent="Theme.AppCompat.Light">
-        <!-- Customize your theme here. -->
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
+
+    <style name="SprayTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--<item name="actionBarStyle">@style/MyActionBar</item>-->
     </style>
+
     <style name="MyActionBar"
         parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/orange_background</item>
-        <item name="android:color">@android:color/white</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="background">@drawable/orange_background</item>
+        <item name="titleTextStyle">@style/MyActionBarTitleText</item>
+        <item name="android:titleTextStyle">@style/MyActionBarTitleText</item>
+        <item name="android:actionMenuTextColor">@color/background_material_light</item>
+    </style>
+
+    <!-- ActionBar title text -->
+    <style name="MyActionBarTitleText"
+        parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/purple</item>
+
+        <!-- The textColor property is backward compatible with the Support Library -->
     </style>
 
 </resources>
