@@ -187,4 +187,9 @@ public class SprayImageFragment extends Fragment {
         return  inflater.inflate(R.layout.fragment_spray_image_layout, container, false);
     }
 
+    public void setImageFromUri(Uri uri){
+
+        imageView.setImageURI(uri);
+    }
+
 }

@@ -1,7 +1,10 @@
 package com.bahri.spray.Controller;
 
+import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -11,6 +14,8 @@ import android.widget.TabHost;
 
 import com.bahri.spray.R;
 
+import java.util.ArrayList;
+
 public class SprayMediaActivity extends ActionBarActivity {
     FragmentTabHost mTabHost;
 
@@ -19,8 +24,47 @@ public class SprayMediaActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(getString(R.string.orangeColor))));
 
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
         setContentView(R.layout.activity_spray_media_layout);
         initTabs();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                handleSendText(intent); // Handle text being sent
+            } else if (type.startsWith("image/")) {
+                handleSendImage(intent); // Handle single image being sent
+            }
+        } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
+            if (type.startsWith("image/")) {
+                handleSendMultipleImages(intent); // Handle multiple images being sent
+            }}
+    }
+
+    void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            // Update UI to reflect text being shared
+        }
+    }
+
+    void handleSendImage(Intent intent) {
+        Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        if (imageUri != null) {
+            // Update UI to reflect image being shared
+            SprayImageFragment fragment = (SprayImageFragment) getFragmentManager().findFragmentByTag("Image");
+            SprayImageFragment sprayImageFragment = (SprayImageFragment) getFragmentManager().findFragmentById(R.id.SprayImageFragmentLayout);
+            fragment.setImageFromUri(imageUri);
+    }
+    }
+
+    void handleSendMultipleImages(Intent intent) {
+        ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+        if (imageUris != null) {
+            // Update UI to reflect multiple images being shared
+        }
     }
 
     private void initTabs()

@@ -16,15 +16,11 @@
         android:maxSdkVersion="18" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- Declaration that this app is usable on phones with Bluetooth Low Energy. -->
-    <uses-feature
-        android:name="android.hardware.bluetooth_le"
-        android:required="true" />
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <!-- Estimote service responsible for scanning beacons. -->
-    <service
-        android:name="com.estimote.sdk.service.BeaconService"
-        android:exported="false" />
+    <service android:name="com.estimote.sdk.service.BeaconService" android:exported="false" />
 
 
 
@@ -90,6 +86,21 @@
         <activity
             android:name=".Controller.SprayMediaActivity"
             android:label="@string/title_activity_spray_to_all" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Controller.SprayToGroupActivity"
