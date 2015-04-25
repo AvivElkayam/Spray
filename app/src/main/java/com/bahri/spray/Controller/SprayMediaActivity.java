@@ -54,8 +54,8 @@ public class SprayMediaActivity extends ActionBarActivity {
         Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if (imageUri != null) {
             // Update UI to reflect image being shared
-            SprayImageFragment fragment = (SprayImageFragment) getFragmentManager().findFragmentByTag("Image");
-            SprayImageFragment sprayImageFragment = (SprayImageFragment) getFragmentManager().findFragmentById(R.id.SprayImageFragmentLayout);
+            SprayImageFragment fragment = (SprayImageFragment) this.getSupportFragmentManager().findFragmentByTag("Image");
+   //         SprayImageFragment sprayImageFragment = (SprayImageFragment) getSupportFragmentManager().findFragmentById(R.id.SprayImageFragmentLayout);
             fragment.setImageFromUri(imageUri);
     }
     }
