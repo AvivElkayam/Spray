@@ -17,7 +17,7 @@
             android:layout_height="400dp"
             android:id="@+id/image_preview_image_view"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/current_file_cell_text_view"
             android:elevation="10dp"/>
     </LinearLayout>
 

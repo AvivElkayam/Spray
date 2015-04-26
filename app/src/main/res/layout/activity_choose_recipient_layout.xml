@@ -4,50 +4,70 @@
 
     tools:context="com.bahri.spray.Controller.ChooseRecipientActivity"
     android:background="@drawable/white_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
 
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="No users have been found near you."
+        android:id="@+id/choose_recipient_no_users_text_view"
+        android:gravity="center" />
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:layout_marginTop="10dp">
+        android:layout_height="fill_parent"
+        android:layout_gravity="left|center_vertical"
+        android:id="@+id/choose_recipient_users_nearby_layout">
 
-        <EditText
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:layout_width="200dp"
+                android:layout_height="fill_parent"
+                android:id="@+id/editText"
+                android:hint="Group Name"
+                android:layout_gravity="right"
+
+              />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/choose_recipient_spinner"
+                android:layout_gravity="right" />
+        </LinearLayout>
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="350dp"
+            android:id="@+id/choose_recipient_list_view"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
             android:layout_width="200dp"
-            android:layout_height="fill_parent"
-            android:id="@+id/editText"
-            android:hint="Group Name"
-            android:layout_gravity="right" />
+            android:layout_height="wrap_content"
+            android:text="Spray Them"
+            android:id="@+id/button"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/pink_button"
+            android:textColor="#ffffffff" />
 
-        <Spinner
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/choose_recipient_spinner"
-            android:layout_gravity="right" />
+            android:text="Save Group"
+            android:id="@+id/button3"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="350dp"
-        android:id="@+id/choose_recipient_list_view"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Spray Them"
-        android:id="@+id/button"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/pink_button"
-        android:textColor="#ffffffff" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save Group"
-        android:id="@+id/button3"
-        android:layout_gravity="center_horizontal" />
 </LinearLayout>

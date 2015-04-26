@@ -41,7 +41,7 @@
         android:text="@string/LoginBtn" />
 
     <Button
-        android:id="@+id/signup"
+        android:id="@+id/signup_signup_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login"
@@ -50,7 +50,15 @@
         android:id="@+id/img"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/signup"
+        android:layout_below="@+id/signup_signup_button"
         android:text="@string/img" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/login_image_view"
+        android:layout_below="@+id/img"
+        android:layout_alignParentStart="true"
+       />
 
 </RelativeLayout>

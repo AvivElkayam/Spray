@@ -96,6 +96,25 @@
             android:name=".Controller.ImagePreviewActivity"
             android:label="@string/title_activity_image_preview" >
         </activity>
+        <activity
+            android:name="com.dropbox.client2.android.AuthActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask" >
+            <intent-filter>
+
+                <!-- Change this to be db- followed by your app key -->
+                <data android:scheme="db-61c3y9t99mqkzyu" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Controller.DropBoxActivity"
+            android:label="@string/title_activity_drop_box" >
+        </activity>
     </application>
 
 </manifest>

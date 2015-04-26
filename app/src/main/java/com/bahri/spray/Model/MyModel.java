@@ -2,12 +2,14 @@ package com.bahri.spray.Model;
 
 
 import android.bluetooth.BluetoothDevice;
+import android.graphics.Bitmap;
 
+import com.bahri.spray.Controller.CurrentMediaFragment;
 import com.bahri.spray.Controller.LoginActivity;
 import com.bahri.spray.Controller.MainTabActivity;
 import com.bahri.spray.Controller.SignUpActivity;
 import com.bahri.spray.Controller.SprayFragment;
-import com.parse.ParseUser;
+import com.bahri.spray.SprayUser;
 
 import java.util.ArrayList;
 
@@ -15,7 +17,7 @@ import java.util.ArrayList;
  * Created by user on 19/03/2015.
  */
 public class MyModel {
-    public static ArrayList<ParseUser> discoverdUsers = new ArrayList<ParseUser>();
+    public static ArrayList<SprayUser> discoverdUsers = new ArrayList<SprayUser>();
     public static ArrayList<Integer> discoverdUsersIDSLocalArray = new ArrayList<Integer>();
     private static MyModel ourInstance = new MyModel();
     private ModelInterface model;
@@ -33,7 +35,7 @@ public class MyModel {
     {
         public  void LoginToSpray(String userName, String password);
         public  void LogOutFromSpray();
-        public void SignUpToSpray(String userName, String password);
+        public void SignUpToSpray(String userName, String password,String email,Bitmap userImage);
         public boolean IsParseUserConnect();
         public int UserCounter();
         public void setSignActivity(SignUpActivity signActivity);
@@ -42,6 +44,11 @@ public class MyModel {
         public void updateRelationsInServer(Integer id);
         public void deleteRelations();
         public void getCloseUsers();
+        public void sendImageToUsers(ArrayList<Integer> usersTosendTo,Bitmap bitmap);
+        public void setCurrentMediaFragment(CurrentMediaFragment currentMediaFragment);
+        public void getCurrentFiles();
+        public void updateLocation(double latitude,double longitude);
+        public void getCloseUsersByGPS();
     }
 
     public  void LoginToSpray(String userName, String password){
@@ -53,13 +60,16 @@ public class MyModel {
         model.LogOutFromSpray();
     }
 
-    public void SignUpToSpray(String userName, String password){
-        model.SignUpToSpray(userName,password);
+    public void SignUpToSpray(String userName, String password,String email,Bitmap userImage){
+        model.SignUpToSpray(userName,password,email,userImage);
     }
 
     public void setSprayFragment(SprayFragment fragment)
     {}
-
+    public void setCurrentMediaFragment(CurrentMediaFragment currentMediaFragment)
+    {
+        model.setCurrentMediaFragment(currentMediaFragment);
+    }
 
     public boolean IsParseUserConnect(){
         return  model.IsParseUserConnect();
@@ -75,5 +85,20 @@ public class MyModel {
         model.updateRelationsInServer(id);
     }
     public void getCloseUsers(){model.getCloseUsers();}
-
+    public void sendImageToUsers(ArrayList<Integer> usersTosendTo,Bitmap bitmap)
+    {
+        model.sendImageToUsers(usersTosendTo,bitmap);
+    }
+    public void getCurrentFiles()
+    {
+        model.getCurrentFiles();
+    }
+    public void updateLocation(double latitude,double longitude)
+    {
+        model.updateLocation(latitude,longitude);
+    }
+    public void getCloseUsersByGPS()
+    {
+        model.getCloseUsersByGPS();
+    }
 }

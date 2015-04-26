@@ -12,11 +12,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.bahri.spray.Model.MyModel;
 import com.bahri.spray.R;
+
+import java.util.ArrayList;
 
 public class ImagePreviewActivity extends ActionBarActivity {
     ImageView imageView;
     Button sprayButton;
+    Bitmap image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,10 +28,10 @@ public class ImagePreviewActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_image_preview);
         initViews();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(
+        image = BitmapFactory.decodeByteArray(
                 getIntent().getByteArrayExtra("imageByteArray"), 0, getIntent().getByteArrayExtra("imageByteArray").length);
 
-        imageView.setImageBitmap(bitmap);
+        imageView.setImageBitmap(image);
     }
 
     private void initViews() {
@@ -36,9 +40,14 @@ public class ImagePreviewActivity extends ActionBarActivity {
         sprayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sendImage(MyModel.discoverdUsersIDSLocalArray,image);
 
             }
         });
+    }
+
+    private void sendImage(ArrayList<Integer> usersTosendTo,Bitmap bitmap) {
+        MyModel.getInstance().sendImageToUsers(usersTosendTo, bitmap);
     }
 
 

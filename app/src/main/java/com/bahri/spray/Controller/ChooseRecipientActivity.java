@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBar;
@@ -21,23 +22,30 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bahri.spray.AppConstants;
 import com.bahri.spray.Model.MyModel;
 import com.bahri.spray.R;
+import com.bahri.spray.SprayUser;
 import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChooseRecipientActivity extends ActionBarActivity {
     ListView closeUsersListView;
-    ArrayAdapter<ParseUser> myArrayAdapter;
+    ArrayAdapter<SprayUser> myArrayAdapter;
     Spinner spinner;
+    TextView noUsersTextView;
+    LinearLayout usersNearbyLayout;
     ArrayList<Integer> imagesArray = new ArrayList<Integer>();
     ArrayList<Integer> chosenUsersIndexArray = new ArrayList<Integer>();
     int[] images = {
@@ -70,7 +78,7 @@ public class ChooseRecipientActivity extends ActionBarActivity {
             return itemView;
         }
     }
-    public class CloseUsersArrayAdapter extends ArrayAdapter<ParseUser>
+    public class CloseUsersArrayAdapter extends ArrayAdapter<SprayUser>
     {
         public CloseUsersArrayAdapter()
         {
@@ -80,15 +88,29 @@ public class ChooseRecipientActivity extends ActionBarActivity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
-            ParseUser user = (ParseUser)closeUsersListView.getItemAtPosition(position);
+
+           // SprayUser user = (SprayUSer)closeUsersListView.getItemAtPosition(position);
 
             if(itemView==null)
             {
                 itemView = getLayoutInflater().inflate(R.layout.choose_recipient_cell,parent,false);
             }
-            ParseUser parseUser = MyModel.discoverdUsers.get(position);
+            SprayUser sprayUser = MyModel.discoverdUsers.get(position);
             TextView nameTextView = (TextView)itemView.findViewById(R.id.choose_recipient_cell_name_text_view);
-            nameTextView.setText(user.getUsername());
+            nameTextView.setText(sprayUser.getUserName());
+            TextView distanceTextView = (TextView)itemView.findViewById(R.id.choose_recipient_cell_distance_text_view);
+//            float i2=(float)sprayUser.getDistance();
+//            distanceTextView.setText(new DecimalFormat("##.##").format(i2));
+            distanceTextView.setText((sprayUser.getDistance())+" KM from you");
+            ImageView imageView = (ImageView)itemView.findViewById(R.id.choose_recipient_cel_image_view);
+            if(sprayUser.getImage()!=null) {
+                //imageView.setImageBitmap(AppConstants.getRoundedCornerBitmap(sprayUser.getImage(), 64));
+                imageView.setImageBitmap(sprayUser.getImage());
+            }
+            else
+            {
+                imageView.setImageBitmap(AppConstants.getRoundedCornerBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.group),64));
+            }
             CheckBox checkBox = (CheckBox)itemView.findViewById(R.id.choose_recipient_cell_check_box);
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -136,7 +158,18 @@ public class ChooseRecipientActivity extends ActionBarActivity {
             imagesArray.add(images[i]);
         }
         spinner.setAdapter(new SpinnerAdapter(this,R.layout.choose_recipient_spinner_cell,imagesArray));
-
+        noUsersTextView = (TextView)findViewById(R.id.choose_recipient_no_users_text_view);
+        usersNearbyLayout = (LinearLayout)findViewById(R.id.choose_recipient_users_nearby_layout);
+        if(MyModel.getInstance().discoverdUsers.size()==0)
+        {
+            noUsersTextView.setVisibility(View.VISIBLE);
+            usersNearbyLayout.setVisibility(View.GONE);
+        }
+        else
+        {
+            noUsersTextView.setVisibility(View.GONE);
+            usersNearbyLayout.setVisibility(View.VISIBLE);
+        }
         ActionBar actionBar = getSupportActionBar();
         SpannableString spannableString = new SpannableString("Choose Recipient");
         spannableString.setSpan(new ForegroundColorSpan(Color.WHITE), 0, spannableString.toString()

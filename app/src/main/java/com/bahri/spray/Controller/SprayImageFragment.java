@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,6 +25,9 @@ import android.widget.TextView;
 import com.bahri.spray.Model.MyModel;
 import com.bahri.spray.R;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+import com.squareup.picasso.Transformation;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -43,7 +47,8 @@ public class SprayImageFragment extends Fragment {
     ImageView imageView;
     int[] images = {
             R.drawable.spray,
-            R.drawable.media
+            R.drawable.media,
+            R.drawable.group
     };
     public class SprayImageArrayListAdapter extends ArrayAdapter<String>
     {
@@ -97,6 +102,19 @@ public class SprayImageFragment extends Fragment {
                     });
                     break;
                 }
+                case 2:
+                {
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new   Intent(getActivity(),DropBoxActivity.class);
+                            startActivityForResult(intent, 3);
+
+                        }
+                    });
+                    break;
+
+                }
             }
             return itemView;
         }
@@ -121,9 +139,34 @@ public class SprayImageFragment extends Fragment {
 
                     bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
                             bitmapOptions);
+//                    Picasso.with(getActivity())
+//                            .load(f)
+//                            .resize(imageView.getWidth(), imageView.getHeight())
+//                            .centerCrop()
+//                            .into(imageView);
+//                    Target target = new Target() {
+//                        @Override
+//                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+//                            imageView.setImageBitmap(bitmap);
+//                            Drawable image = imageView.getDrawable();
+//                        }
+//
+//                        @Override
+//                        public void onBitmapFailed(Drawable errorDrawable) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+//
+//                        }
+//                    };
+//
+//                    Picasso.with(getActivity()).load(f).into(target);
+
 
                     imageView.setImageBitmap(bitmap);
-                    putBitmapToIntentAndStartActivity(bitmap);
+                    //putBitmapToIntentAndStartActivity(bitmap);
                     String path = android.os.Environment
                             .getExternalStorageDirectory()
                             + File.separator
@@ -133,7 +176,7 @@ public class SprayImageFragment extends Fragment {
                     File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
                     try {
                         outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outFile);
                         outFile.flush();
                         outFile.close();
                     } catch (FileNotFoundException e) {
@@ -181,6 +224,8 @@ public class SprayImageFragment extends Fragment {
         cellTitleArrayList = new ArrayList<String>();
         cellTitleArrayList.add("Take a picture");
         cellTitleArrayList.add("Photo library");
+        cellTitleArrayList.add("From DropBox");
+
     }
 
     @Override
@@ -192,7 +237,8 @@ public class SprayImageFragment extends Fragment {
         Intent i = new Intent(getActivity(), ImagePreviewActivity.class);
         Bitmap b=scaleDown(bitmap,400,true); // your bitmap
         ByteArrayOutputStream bs = new ByteArrayOutputStream();
-        b.compress(Bitmap.CompressFormat.PNG, 50, bs);
+        b.compress(Bitmap.CompressFormat.PNG, 100, bs);
+
         i.putExtra("imageByteArray", bs.toByteArray());
         startActivity(i);
 

@@ -20,5 +20,7 @@
 
         <!-- The textColor property is backward compatible with the Support Library -->
     </style>
-
+    <style parent="@android:style/Widget.ProgressBar" name="customProgressBar">
+        <item name="android:progressDrawable">@drawable/scan_animation</item>
+    </style>
 </resources>
