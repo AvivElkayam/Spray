@@ -34,4 +34,5 @@
     <string name="title_activity_choose_recipient">ChooseRecipientActivity</string>
     <string name="title_activity_spray_to_all">Share with Spary</string>
     <string name="title_activity_spray_to_group">SprayToGroupActivity</string>
+    <string name="facebook_app_id">SprayToGroupActivity</string>
 </resources>

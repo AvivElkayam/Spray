@@ -33,6 +33,7 @@
         android:label="@string/app_name"
         android:theme="@style/SprayTheme"
         android:uiOptions="splitActionBarWhenNarrow" >
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <activity
             android:name=".Controller.MainActivity"
             android:label="@string/title_activity_main"
@@ -106,6 +107,11 @@
             android:name=".Controller.SprayToGroupActivity"
             android:label="@string/title_activity_spray_to_group" >
         </activity>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

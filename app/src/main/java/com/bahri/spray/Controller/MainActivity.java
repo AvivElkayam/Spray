@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.os.Build;
 
 import com.bahri.spray.R;
+import com.facebook.FacebookSdk;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -20,6 +21,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         actionBar =  getSupportActionBar();
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
