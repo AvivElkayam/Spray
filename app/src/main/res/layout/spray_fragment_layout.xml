@@ -72,4 +72,13 @@
         android:layout_below="@+id/spray_to_button"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scan"
+        android:id="@+id/hotspot_button"
+        android:gravity="center"
+        android:layout_below="@+id/scan_button"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

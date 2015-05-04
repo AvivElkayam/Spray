@@ -28,6 +28,11 @@
         android:exported="false" />
 
     <!-- HotSpot permission -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+
+
     <application
         android:name=".Model.ParseApplication"
         android:allowBackup="true"
@@ -71,27 +76,6 @@
             <meta-data
                 android:name="android.support.UI_OPTIONS"
                 android:value="splitActionBarWhenNarrow" />
-        </activity>
-        <activity
-            android:name=".Controller.MainTabActivity"
-            android:label="@string/title_activity_tab_test_activity"
-            android:screenOrientation="portrait"
-            android:theme="@style/SprayTheme" >
-        </activity>
-        <activity
-            android:name=".Controller.SprayToActivity"
-            android:label="@string/title_activity_spray_to"
-            android:parentActivityName=".Controller.MainTabActivity"
-            android:theme="@style/SprayTheme" >
-        </activity>
-        <activity
-            android:name=".Controller.ChooseRecipientActivity"
-            android:label="@string/title_activity_choose_recipient"
-            android:parentActivityName=".Controller.SprayToActivity" >
-        </activity>
-        <activity
-            android:name=".Controller.SprayMediaActivity"
-            android:label="@string/title_activity_spray_to_all" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -113,6 +97,28 @@
 
                 <data android:mimeType="image/*" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".Controller.MainTabActivity"
+            android:label="@string/title_activity_tab_test_activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SprayTheme" >
+        </activity>
+        <activity
+            android:name=".Controller.SprayToActivity"
+            android:label="@string/title_activity_spray_to"
+            android:parentActivityName=".Controller.MainTabActivity"
+            android:theme="@style/SprayTheme" >
+        </activity>
+        <activity
+            android:name=".Controller.ChooseRecipientActivity"
+            android:label="@string/title_activity_choose_recipient"
+            android:parentActivityName=".Controller.SprayToActivity" >
+        </activity>
+        <activity
+            android:name=".Controller.SprayMediaActivity"
+            android:label="@string/title_activity_spray_to_all" >
+
         </activity>
         <activity
             android:name=".Controller.SprayToGroupActivity"

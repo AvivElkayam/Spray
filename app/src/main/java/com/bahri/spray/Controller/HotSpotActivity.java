@@ -13,9 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.whitebyte.wifihotspotutils.ClientScanResult;
-import com.whitebyte.wifihotspotutils.FinishScanListener;
-import com.WifiHotSpot.WifiApManager;
+import com.bahri.spray.WifiHotSpot.ClientScanResult;
+import com.bahri.spray.WifiHotSpot.FinishScanListener;
+import com.bahri.spray.WifiHotSpot.WifiApManager;
 
 import com.bahri.spray.R;
 
@@ -30,6 +30,8 @@ public class HotSpotActivity extends ActionBarActivity {
 
         textView1 = (TextView) findViewById(R.id.textView1);
         wifiApManager = new WifiApManager(this);
+
+        wifiApManager.setWifiApEnabled(null, true);
 
         scan();
 
@@ -61,7 +63,7 @@ public class HotSpotActivity extends ActionBarActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+    public boolean onOptionsItemSelected (int featureId, MenuItem item) {
         switch (item.getItemId()) {
             case 0:
                 scan();

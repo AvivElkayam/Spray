@@ -23,7 +23,7 @@
     <string name="title_activity_spray_image">hh</string>
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_tabbed">TabbedActivity</string>
+    <string name="title_activity_tabbed">AA Share with Spary</string>
 
     <string name="orangeColor">#F59025</string>
     <string name="title_section1">Section 1</string>
@@ -32,7 +32,7 @@
     <string name="title_activity_tab_test_activity">tab_test_activity</string>
     <string name="title_activity_spray_to">SprayToActivity</string>
     <string name="title_activity_choose_recipient">ChooseRecipientActivity</string>
-    <string name="title_activity_spray_to_all">Share with Spary</string>
+    <string name="title_activity_spray_to_all">SprayToAllActivity</string>
     <string name="title_activity_spray_to_group">SprayToGroupActivity</string>
     <string name="facebook_app_id">SprayToGroupActivity</string>
     <string name="title_activity_hot_spot">HotSpotActivity</string>

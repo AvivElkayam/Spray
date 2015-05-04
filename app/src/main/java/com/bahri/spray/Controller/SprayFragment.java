@@ -49,7 +49,7 @@ public class SprayFragment extends Fragment implements LocationListener {
     TextView locationTextView,closeUsersTextView;
     Geocoder geocoder;
     String locationText = "My Location";
-    Button sprayButton,scanButton;
+    Button sprayButton,scanButton,hotspotButton;
     BluetoothAdapter mBluetoothAdapter;
     BluetoothDevice device;
     TextView textView;
@@ -182,6 +182,16 @@ public class SprayFragment extends Fragment implements LocationListener {
             @Override
             public void onClick(View v) {
                 MyModel.getInstance().getCloseUsers();
+            }
+        });
+
+        hotspotButton = (Button)getActivity().findViewById(R.id.hotspot_button);
+        hotspotButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),HotSpotActivity.class);
+                startActivity(intent);
+
             }
         });
 

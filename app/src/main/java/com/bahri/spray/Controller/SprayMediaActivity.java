@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
@@ -31,6 +32,7 @@ public class SprayMediaActivity extends ActionBarActivity {
         setContentView(R.layout.activity_spray_media_layout);
         initTabs();
 
+
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 handleSendText(intent); // Handle text being sent
@@ -41,6 +43,7 @@ public class SprayMediaActivity extends ActionBarActivity {
             if (type.startsWith("image/")) {
                 handleSendMultipleImages(intent); // Handle multiple images being sent
             }}
+        Log.i("Fragment manger size", "zzz" + getSupportFragmentManager().getFragments().size());
     }
 
     void handleSendText(Intent intent) {
@@ -55,7 +58,9 @@ public class SprayMediaActivity extends ActionBarActivity {
         if (imageUri != null) {
             // Update UI to reflect image being shared
             SprayImageFragment fragment = (SprayImageFragment) this.getSupportFragmentManager().findFragmentByTag("Image");
-   //         SprayImageFragment sprayImageFragment = (SprayImageFragment) getSupportFragmentManager().findFragmentById(R.id.SprayImageFragmentLayout);
+        //    SprayImageFragment sprayImageFragment = (SprayImageFragment) getSupportFragmentManager().findFragmentById(R.id.SprayImageFragmentLayout);
+        //   SprayImageFragment fragment = (SprayImageFragment)
+
             fragment.setImageFromUri(imageUri);
     }
     }
@@ -95,6 +100,9 @@ public class SprayMediaActivity extends ActionBarActivity {
 
             }
         });
+
+
+        Log.i("Fragment manger size", "zzz" + getSupportFragmentManager().getFragments().size());
 
 
         //return mTabHost;

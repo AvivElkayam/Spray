@@ -1,11 +1,13 @@
 package com.bahri.spray.Controller;
 
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.ActionBar;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
@@ -21,6 +24,8 @@ import android.widget.TextView;
 
 import com.bahri.spray.Model.MyModel;
 import com.bahri.spray.R;
+
+import java.util.ArrayList;
 
 public class MainTabActivity extends ActionBarActivity {
 
@@ -36,8 +41,52 @@ public class MainTabActivity extends ActionBarActivity {
         initTabs();
         actionBar=getSupportActionBar();
         setTitleColor(Color.WHITE);
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                handleSendText(intent); // Handle text being sent
+            } else if (type.startsWith("image/")) {
+                handleSendImage(intent); // Handle single image being sent
+            }
+        } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
+            if (type.startsWith("image/")) {
+                handleSendMultipleImages(intent); // Handle multiple images being sent
+            }}
+        Log.i("Fragment manger size", "zzz" + getSupportFragmentManager().getFragments().size());
 
 
+    }
+
+    void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            // Update UI to reflect text being shared
+        }
+    }
+
+    void handleSendImage(Intent intent) {
+        Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        if (imageUri != null) {
+            // Update UI to reflect image being shared
+            mTabHost.setCurrentTabByTag("MediaFragment");
+
+            SprayImageFragment fragment = (SprayImageFragment) this.getSupportFragmentManager().findFragmentByTag("Image");
+            //    SprayImageFragment sprayImageFragment = (SprayImageFragment) getSupportFragmentManager().findFragmentById(R.id.SprayImageFragmentLayout);
+            //   SprayImageFragment fragment = (SprayImageFragment)
+
+
+            fragment.setImageFromUri(imageUri);
+        }
+    }
+
+    void handleSendMultipleImages(Intent intent) {
+        ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+        if (imageUris != null) {
+            // Update UI to reflect multiple images being shared
+        }
     }
     public void chageActionBarStyle()
     {
@@ -65,11 +114,11 @@ public class MainTabActivity extends ActionBarActivity {
 
         mTabHost.addTab(mTabHost.newTabSpec("SprayFragment").setIndicator("", getResources().getDrawable(R.drawable.spray)),
                 SprayFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator("",getResources().getDrawable(R.drawable.media)),
+        mTabHost.addTab(mTabHost.newTabSpec("MediaFragment").setIndicator("",getResources().getDrawable(R.drawable.media)),
                 MediaFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("tab3").setIndicator("",getResources().getDrawable(R.drawable.group)),
+        mTabHost.addTab(mTabHost.newTabSpec("GroupFragment").setIndicator("",getResources().getDrawable(R.drawable.group)),
                 GroupFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("tab4").setIndicator("",getResources().getDrawable(R.drawable.settings)),
+        mTabHost.addTab(mTabHost.newTabSpec("SettingsFragment").setIndicator("",getResources().getDrawable(R.drawable.settings)),
                 SettingsFragment.class, null);
 
         for(int i=0;i<mTabHost.getTabWidget().getChildCount();i++)
