@@ -55,7 +55,7 @@ public class MyModel {
         public void getCloseUsersConnectedToSameWifi(String bssid);
         //bluetooth
         public void updateBluetoothMACAddress(String macAddress);
-        public void getCloseUsersByBluetooth();
+        public void getCloseUserByBluetooth(String macAddress);
     }
 
     public  void LoginToSpray(String userName, String password){
@@ -122,8 +122,8 @@ public class MyModel {
     {
         model.updateBluetoothMACAddress(macAddress);
     }
-    public void getCloseUsersByBluetooth()
+    public void getCloseUsersByBluetooth(String macAddress)
     {
-        model.getCloseUsersByBluetooth();
+        model.getCloseUserByBluetooth(macAddress);
     }
 }

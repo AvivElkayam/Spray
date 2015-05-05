@@ -2,6 +2,10 @@ package com.bahri.spray.Model;
 
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -51,7 +55,19 @@ public class ParseModel implements MyModel.ModelInterface {
     String address;
     BluetoothAdapter mBluetoothAdapter;
     boolean success,exist=false;
-
+    // Create a BroadcastReceiver for ACTION_FOUND
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            // When discovery finds a device
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                // Get the BluetoothDevice object from the Intent
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                // Add the name and address to an array adapter to show in a ListView
+                //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+            }
+        }
+    };
     @Override
     public void LoginToSpray(String userName, String Password) {
 
@@ -516,7 +532,43 @@ public class ParseModel implements MyModel.ModelInterface {
     }
 
     @Override
-    public void getCloseUsersByBluetooth() {
+    public void getCloseUserByBluetooth(String macAddress) {
+        ParseQuery query = ParseUser.getQuery();
+        query.whereNotEqualTo(AppConstants.OBJECT_ID, ParseUser.getCurrentUser().getObjectId());
+        query.whereEqualTo(AppConstants.USER_BLUETOOTH_MAC_ADDRESS, macAddress);
+        query.findInBackground(new FindCallback() {
+            @Override
+            public void done(List list, ParseException e) {
+                for (int i = 0; i < list.size(); i++) {
+                    ParseUser user = (ParseUser) list.get(i);
+
+                    ParseFile file = (ParseFile) user.get(AppConstants.USER_IMAGE);
+
+                    try {
+                        if (file != null) {
+                            byte[] bytes = file.getData();
+                            Bitmap bmp = BitmapFactory
+                                    .decodeByteArray(
+                                            bytes, 0,
+                                            bytes.length);
+                            SprayUser sprayUser = new SprayUser((String) user.get("username"), user.getObjectId(), (Integer) user.get(AppConstants.USER_MAJOR_ID), bmp,0);
+                            MyModel.discoverdUsers.add(sprayUser);
+                            mainTabActivity.updateCloseUsersTextView();
+
+                        } else {
+                            SprayUser sprayUser = new SprayUser((String) user.get("username"), user.getObjectId(), ((Integer) user.get(AppConstants.USER_MAJOR_ID)), null, 0);
+                            MyModel.discoverdUsers.add(sprayUser);
+                            mainTabActivity.updateCloseUsersTextView();
+                        }
+                    }
+                    catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                MyModel.discoverdUsers.clear();
+
+            }
+        });
 
     }
 

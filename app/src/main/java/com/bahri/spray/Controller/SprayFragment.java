@@ -59,6 +59,18 @@ public class SprayFragment extends Fragment implements LocationListener {
     ProgressBar progressBar;
     String myBSSID;
     WifiManager mainWifiObj;
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            // When discovery finds a device
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                // Get the BluetoothDevice object from the Intent
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                // Add the name and address to an array adapter to show in a ListView
+                //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+            }
+        }
+    };
     private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
@@ -185,6 +197,8 @@ public class SprayFragment extends Fragment implements LocationListener {
     {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         MyModel.getInstance().updateBluetoothMACAddress(mBluetoothAdapter.getAddress());
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        getActivity().registerReceiver(mReceiver, filter); // Don't forget to unregister during onDestroy
 //        // Initializes Bluetooth adapter.
 //        final BluetoothManager bluetoothManager =
 //                (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
@@ -395,6 +409,21 @@ public class SprayFragment extends Fragment implements LocationListener {
             }
         }
         return bestLocation;
+    }
+    private void getCloseUsersByBluetooth()
+    {
+        int REQUEST_ENABLE_BT = 3;
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+        else
+        {
+//            MyModel.discoverdUsers.clear();
+//            usersLinearLayout.removeAllViews();
+//            MyModel.getInstance().getCloseUserByBluetooth();
+            mBluetoothAdapter.startDiscovery();
+        }
     }
 
 }
