@@ -200,7 +200,11 @@ public class SprayFragment extends Fragment implements LocationListener {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         MyModel.getInstance().updateBluetoothMACAddress(mBluetoothAdapter.getAddress());
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        getActivity().registerReceiver(mReceiver, filter); // Don't forget to unregister during onDestroy
+        getActivity().registerReceiver(mReceiver, filter);
+        Intent discoverableIntent = new
+                Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+        startActivity(discoverableIntent);// Don't forget to unregister during onDestroy
 //        // Initializes Bluetooth adapter.
 //        final BluetoothManager bluetoothManager =
 //                (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
@@ -422,6 +426,7 @@ public class SprayFragment extends Fragment implements LocationListener {
         }
         else
         {
+
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setIndeterminate(true);
             progressBar.setIndeterminateDrawable(getResources().getDrawable(R.drawable.scan_animation));
