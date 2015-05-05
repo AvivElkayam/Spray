@@ -1,10 +1,15 @@
 package com.bahri.spray.Controller;
 
+import android.content.Context;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -22,6 +27,9 @@ import com.bahri.spray.R;
 public class HotSpotActivity extends ActionBarActivity {
     TextView textView1;
     WifiApManager wifiApManager;
+    WifiManager wifi;
+    Method getWifiConfig;
+    WifiConfiguration wifiConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +37,32 @@ public class HotSpotActivity extends ActionBarActivity {
         setContentView(R.layout.activity_hot_spot);
 
         textView1 = (TextView) findViewById(R.id.textView1);
+        //
         wifiApManager = new WifiApManager(this);
+        wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
-        wifiApManager.setWifiApEnabled(null, true);
+        try {
+            getWifiConfig = wifi.getClass().getMethod("getWifiApConfiguration",null);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            wifiConfiguration = (WifiConfiguration) getWifiConfig.invoke(wifi,null);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        //       String s = wifiConfiguration.SSID.toString();
+        wifiConfiguration.SSID ="Spray" ;
+
+        wifiConfiguration.wepKeys[0] = "\"1234\"";
+        wifiConfiguration.status = WifiConfiguration.Status.ENABLED;
+        wifiApManager.setWifiApEnabled(wifiConfiguration, true);
+
 
         scan();
 

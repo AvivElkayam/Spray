@@ -45,7 +45,7 @@ public class MediaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setTitle("Media");
-        Log.i("Fragment manger size", "zzz" + getChildFragmentManager().getFragments().size());
+
         mTabHost = new FragmentTabHost(getActivity());
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.media_tab_host);
         mTabHost.addTab(mTabHost.newTabSpec("Current").setIndicator("Current"),
