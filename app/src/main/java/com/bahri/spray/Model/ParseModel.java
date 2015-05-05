@@ -530,7 +530,7 @@ public class ParseModel implements MyModel.ModelInterface {
             e.printStackTrace();
         }
     }
-
+//.
     @Override
     public void getCloseUserByBluetooth(String macAddress) {
         ParseQuery query = ParseUser.getQuery();
