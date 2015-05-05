@@ -66,6 +66,7 @@ public class SprayFragment extends Fragment implements LocationListener {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                MyModel.getInstance().getCloseUsersByBluetooth(device.getAddress());
                 // Add the name and address to an array adapter to show in a ListView
                 //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
             }
@@ -145,6 +146,7 @@ public class SprayFragment extends Fragment implements LocationListener {
         }
 
     }
+
     public View createUserCellInScrollView(SprayUser user)
     {
         View view = getActivity().getLayoutInflater().inflate(R.layout.spray_fragment_scroll_custom_view, usersLinearLayout,false);
@@ -245,8 +247,9 @@ public class SprayFragment extends Fragment implements LocationListener {
 
                 usersLinearLayout.removeAllViews();
                 MyModel.discoverdUsers.clear();
-                getUsersConnectedToMyWifi();
+                //getUsersConnectedToMyWifi();
                 //getCloseUsersByGPS();
+                getCloseUsersByBluetooth();
 
 
             }
@@ -419,6 +422,12 @@ public class SprayFragment extends Fragment implements LocationListener {
         }
         else
         {
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setIndeterminate(true);
+            progressBar.setIndeterminateDrawable(getResources().getDrawable(R.drawable.scan_animation));
+//                progressBar.setMessage("Scanning for close users...");
+//                progressBar.show();
+            progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.scan_animation));
 //            MyModel.discoverdUsers.clear();
 //            usersLinearLayout.removeAllViews();
 //            MyModel.getInstance().getCloseUserByBluetooth();
