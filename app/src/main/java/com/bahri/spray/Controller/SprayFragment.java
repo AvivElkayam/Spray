@@ -436,6 +436,7 @@ public class SprayFragment extends Fragment implements LocationListener {
 //            MyModel.discoverdUsers.clear();
 //            usersLinearLayout.removeAllViews();
 //            MyModel.getInstance().getCloseUserByBluetooth();
+            //l
             mBluetoothAdapter.startDiscovery();
         }
     }
