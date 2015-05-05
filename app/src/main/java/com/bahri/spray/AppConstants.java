@@ -22,6 +22,8 @@ public class AppConstants {
     public static String USER_IMAGE = "image";
     public static String USER_LATITUDE = "Latitude";
     public static String USER_LONGITUDE = "Longitude";
+    public static String USER_WIFI_BSSID = "WifiBSSID";
+    public static String USER_BLUETOOTH_MAC_ADDRESS = "BlueMac";
     //RELATIONS
     public static String RELATIONS = "Relations";
     public static String RELATIONS_BEACON_ID = "beaconID";
@@ -32,6 +34,8 @@ public class AppConstants {
     public static String ITEMS_DEVICE_ID = "deviceID";
     public static String ITEMS_BEACON_ID = "beaconID";
     public static String ITEMS_ITEM = "Item";
+    public static String ITEMS_RECEIVER_ID = "receiverID";
+    public static String ITEMS_SENDER_ID = "senderID";
 
     //Location
     public static Integer distance = 100;

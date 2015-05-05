@@ -57,7 +57,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="Spray Them"
-            android:id="@+id/button"
+            android:id="@+id/choose_recipient_spray_button"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/pink_button"
             android:textColor="#ffffffff" />

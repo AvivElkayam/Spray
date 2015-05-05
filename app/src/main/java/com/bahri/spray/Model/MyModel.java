@@ -44,11 +44,18 @@ public class MyModel {
         public void updateRelationsInServer(Integer id);
         public void deleteRelations();
         public void getCloseUsers();
-        public void sendImageToUsers(ArrayList<Integer> usersTosendTo,Bitmap bitmap);
+        public void sendImageToUsers(ArrayList<String> usersTosendTo,Bitmap bitmap);
         public void setCurrentMediaFragment(CurrentMediaFragment currentMediaFragment);
         public void getCurrentFiles();
+        //gps
         public void updateLocation(double latitude,double longitude);
         public void getCloseUsersByGPS();
+        //Wifi
+        public void updateWifi(String bssid);
+        public void getCloseUsersConnectedToSameWifi(String bssid);
+        //bluetooth
+        public void updateBluetoothMACAddress(String macAddress);
+        public void getCloseUsersByBluetooth();
     }
 
     public  void LoginToSpray(String userName, String password){
@@ -85,7 +92,7 @@ public class MyModel {
         model.updateRelationsInServer(id);
     }
     public void getCloseUsers(){model.getCloseUsers();}
-    public void sendImageToUsers(ArrayList<Integer> usersTosendTo,Bitmap bitmap)
+    public void sendImageToUsers(ArrayList<String> usersTosendTo,Bitmap bitmap)
     {
         model.sendImageToUsers(usersTosendTo,bitmap);
     }
@@ -93,6 +100,7 @@ public class MyModel {
     {
         model.getCurrentFiles();
     }
+    //gps
     public void updateLocation(double latitude,double longitude)
     {
         model.updateLocation(latitude,longitude);
@@ -100,5 +108,22 @@ public class MyModel {
     public void getCloseUsersByGPS()
     {
         model.getCloseUsersByGPS();
+    }
+    //wifi
+    public void updateWifi(String bssid)
+    {
+        model.updateWifi(bssid);
+    }
+    public void getCloseUsersConectedToSameWifi(String bssid)
+    {
+        model.getCloseUsersConnectedToSameWifi(bssid);
+    }
+    public void updateBluetoothMACAddress(String macAddress)
+    {
+        model.updateBluetoothMACAddress(macAddress);
+    }
+    public void getCloseUsersByBluetooth()
+    {
+        model.getCloseUsersByBluetooth();
     }
 }

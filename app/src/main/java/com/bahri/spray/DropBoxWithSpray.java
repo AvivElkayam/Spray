@@ -126,7 +126,7 @@ public class DropBoxWithSpray
                 int i=0;
                 if(dirent!=null) {
                     for (DropboxAPI.Entry ent : dirent.contents) {
-
+                        Log.w("s",ent.icon);
                         files.add(ent);// Add it to the list of thumbs we can choose from
                         //dir = new ArrayList<String>();
                         dir.add(new String(files.get(i++).path));
@@ -232,4 +232,5 @@ public class DropBoxWithSpray
         }
         return null;
     }
+
 }

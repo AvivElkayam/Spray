@@ -25,7 +25,9 @@ import com.parse.Parse;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -65,6 +67,8 @@ public class ParseModel implements MyModel.ModelInterface {
                             currentUser.put("BlueMac",address);
                             currentUser.saveInBackground();
                             loginActivity.loginSucces();
+                            ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                            installation.put("user", ParseUser.getCurrentUser());
 
 
                         } else {
@@ -113,6 +117,8 @@ public class ParseModel implements MyModel.ModelInterface {
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
                 if (e == null) {
+                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                    installation.put("user", ParseUser.getCurrentUser());
                     signUpActivity.signUpSucces();
                 } else {
 
@@ -291,7 +297,7 @@ public class ParseModel implements MyModel.ModelInterface {
                                             .decodeByteArray(
                                                     bytes, 0,
                                                     bytes.length);
-                                    SprayUser sprayUser = new SprayUser(user.getUsername(),(Integer)user.get(AppConstants.USER_MAJOR_ID),bmp,0);
+                                    SprayUser sprayUser = new SprayUser(user.getUsername(),user.getObjectId(),(Integer)user.get(AppConstants.USER_MAJOR_ID),bmp,0);
                                     MyModel.discoverdUsers.add(sprayUser);
                                     mainTabActivity.updateCloseUsersTextView();
 
@@ -314,7 +320,7 @@ public class ParseModel implements MyModel.ModelInterface {
     }
 
     @Override
-    public void sendImageToUsers(ArrayList<Integer> usersTosendTo, Bitmap bitmap) {
+    public void sendImageToUsers(ArrayList<String> usersTosendTo, Bitmap bitmap) {
 
         // Convert it to byte
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -326,27 +332,47 @@ public class ParseModel implements MyModel.ModelInterface {
         ParseFile file = new ParseFile("androidbegin.png", image);
         // Upload the image into Parse Cloud
         file.saveInBackground();
+        for(String s:usersTosendTo)
+        {
+            ParseObject imgupload = new ParseObject(AppConstants.ITEMS);
 
+            // Create a column named "ImageName" and set the string
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss");
+            String currentDateAndTime = sdf.format(new Date());
+            imgupload.put(AppConstants.ITEMS_DISPLAY_NAME, currentDateAndTime);
+            imgupload.put(AppConstants.ITEMS_SENDER_ID,ParseUser.getCurrentUser().getObjectId());
+            imgupload.put(AppConstants.ITEMS_RECEIVER_ID,s);
+            // Create a column named "ImageFile" and insert the image
+            imgupload.put(AppConstants.ITEMS_ITEM, file);
+
+            // Create the class and the columns
+            imgupload.saveInBackground();
+            sendPush(s);
+        }
+            sendPush(ParseUser.getCurrentUser().getObjectId());
         // Create a New Class called "ImageUpload" in Parse
-        ParseObject imgupload = new ParseObject(AppConstants.ITEMS);
 
-        // Create a column named "ImageName" and set the string
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss");
-        String currentDateAndTime = sdf.format(new Date());
-        imgupload.put(AppConstants.ITEMS_DISPLAY_NAME, currentDateAndTime);
-        imgupload.put(AppConstants.ITEMS_DEVICE_ID,ParseUser.getCurrentUser().get(AppConstants.USER_MAJOR_ID));
-        imgupload.put(AppConstants.ITEMS_BEACON_ID,ParseUser.getCurrentUser().get(AppConstants.USER_MAJOR_ID));
-        // Create a column named "ImageFile" and insert the image
-        imgupload.put(AppConstants.ITEMS_ITEM, file);
-
-        // Create the class and the columns
-        imgupload.saveInBackground();
 
         // Show a simple toast message
 //        Toast.makeText(MainActivity.this, "Image Uploaded",
 //                Toast.LENGTH_SHORT).show();
     }
+    private void sendPush(String id) {
+        // Find users near a given location
+        ParseQuery userQuery = ParseUser.getQuery();
+        userQuery.whereEqualTo("objectId",id);
 
+// Find devices associated with these users
+        ParseQuery pushQuery = ParseInstallation.getQuery();
+        pushQuery.whereMatchesQuery("user", userQuery);
+
+// Send push notification to query
+        ParsePush push = new ParsePush();
+        push.setQuery(pushQuery); // Set our Installation query
+        push.setMessage("You just got sprayed!");
+        push.sendInBackground();
+
+    }
     @Override
     public void setCurrentMediaFragment(CurrentMediaFragment currentMediaFragment) {
         this.currentMediaFragment=currentMediaFragment;
@@ -422,6 +448,78 @@ public class ParseModel implements MyModel.ModelInterface {
             }
         });
     }
+
+    @Override
+    public void updateWifi(String bssid) {
+        ParseQuery query = new ParseUser().getQuery();
+        try {
+            ParseObject parseObject = query.get(ParseUser.getCurrentUser().getObjectId());
+            parseObject.put(AppConstants.USER_WIFI_BSSID,bssid);
+            parseObject.saveInBackground();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void getCloseUsersConnectedToSameWifi(String bssid) {
+        ParseQuery query = ParseUser.getQuery();
+        query.whereNotEqualTo(AppConstants.OBJECT_ID, ParseUser.getCurrentUser().getObjectId());
+        query.whereEqualTo(AppConstants.USER_WIFI_BSSID, bssid);
+        query.findInBackground(new FindCallback() {
+            @Override
+            public void done(List list, ParseException e) {
+                for (int i = 0; i < list.size(); i++) {
+                    ParseUser user = (ParseUser) list.get(i);
+
+                ParseFile file = (ParseFile) user.get(AppConstants.USER_IMAGE);
+
+                try {
+                    if (file != null) {
+                        byte[] bytes = file.getData();
+                        Bitmap bmp = BitmapFactory
+                                .decodeByteArray(
+                                        bytes, 0,
+                                        bytes.length);
+                        SprayUser sprayUser = new SprayUser((String) user.get("username"), user.getObjectId(), (Integer) user.get(AppConstants.USER_MAJOR_ID), bmp,0);
+                        MyModel.discoverdUsers.add(sprayUser);
+                        mainTabActivity.updateCloseUsersTextView();
+
+                    } else {
+                        SprayUser sprayUser = new SprayUser((String) user.get("username"), user.getObjectId(), ((Integer) user.get(AppConstants.USER_MAJOR_ID)), null, 0);
+                        MyModel.discoverdUsers.add(sprayUser);
+                        mainTabActivity.updateCloseUsersTextView();
+                    }
+                }
+                 catch (ParseException e1) {
+                    e1.printStackTrace();
+                }
+            }
+                MyModel.discoverdUsers.clear();
+
+            }
+        });
+
+    }
+
+    @Override
+    public void updateBluetoothMACAddress(String macAddress) {
+        ParseQuery query = new ParseUser().getQuery();
+        try {
+            ParseObject parseObject = query.get(ParseUser.getCurrentUser().getObjectId());
+            parseObject.put(AppConstants.USER_BLUETOOTH_MAC_ADDRESS,macAddress);
+            parseObject.saveInBackground();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getCloseUsersByBluetooth() {
+
+    }
+
     private double gps2m(float lat_a, float lng_a, float lat_b, float lng_b) {
         float pk = (float) (180/3.14169);
 
@@ -438,18 +536,7 @@ public class ParseModel implements MyModel.ModelInterface {
         return 6366000*tt;
     }
     public ParseUser getUserByID(Integer id) {
-        //final ParseObject[] parseObject = new ParseObject[1];
-//        ParseQuery<ParseUser> query = new ParseQuery().getUserQuery();
-//        query.whereEqualTo(AppConstants.USER_MAJOR_ID,id);
-//        try {
-//            List list = query.find();
-//            if (list.size() > 0) {
-//                return (ParseUser) list.get(0);
-//            }
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
+
         ParseUser user=null;
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo(AppConstants.USER_MAJOR_ID, id);
@@ -487,6 +574,7 @@ public class ParseModel implements MyModel.ModelInterface {
                         location.setLongitude(userLongitude);
 
                         float dis = (locationCurrent.distanceTo(location))/1000;
+
                         //float dis = (float)gps2m((float)locationCurrent.getLatitude(),(float)locationCurrent.getLongitude(),(float)location.getLatitude(),(float)location.getLongitude());
                         if (dis >=0) {
                             if (user != null  ) {
@@ -501,14 +589,14 @@ public class ParseModel implements MyModel.ModelInterface {
                                                 .decodeByteArray(
                                                         bytes, 0,
                                                         bytes.length);
-                                        SprayUser sprayUser = new SprayUser((String) user.get("username"), (Integer) user.get(AppConstants.USER_MAJOR_ID), bmp,dis);
+                                        SprayUser sprayUser = new SprayUser((String) user.get("username"),user.getObjectId(), (Integer) user.get(AppConstants.USER_MAJOR_ID), bmp,dis);
                                         MyModel.discoverdUsers.add(sprayUser);
                                         //mainTabActivity.updateCloseUsersTextView();
 
                                     }
                                     else
                                     {
-                                        SprayUser sprayUser = new SprayUser((String) user.get("username"), (Integer) user.get(AppConstants.USER_MAJOR_ID), null,dis);
+                                        SprayUser sprayUser = new SprayUser((String) user.get("username"), user.getObjectId(),((Integer) user.get(AppConstants.USER_MAJOR_ID)), null,dis);
                                         MyModel.discoverdUsers.add(sprayUser);
                                         //mainTabActivity.updateCloseUsersTextView();
                                     }

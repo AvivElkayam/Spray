@@ -84,7 +84,7 @@ public class CurrentMediaFragment extends Fragment {
     }
 
     private void getCurrentFiles() {
-//         progressDialog = ProgressDialog.show(getActivity(), "",
+//         progressBar = ProgressDialog.show(getActivity(), "",
 //                "Downloading Image...", true);
         MyModel.getInstance().getCurrentFiles();
     }
@@ -93,7 +93,7 @@ public class CurrentMediaFragment extends Fragment {
         this.files.add(fileFromServer);
         adapter.notifyDataSetChanged();
        // initViews();
-       // progressDialog.dismiss();
+       // progressBar.dismiss();
 
     }
 }

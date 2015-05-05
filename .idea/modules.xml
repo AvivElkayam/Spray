@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Spray.iml" filepath="$PROJECT_DIR$/Spray.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dropboxChooserSDK/dropboxChooserSDK.iml" filepath="$PROJECT_DIR$/dropboxChooserSDK/dropboxChooserSDK.iml" />
     </modules>
   </component>
 </project>

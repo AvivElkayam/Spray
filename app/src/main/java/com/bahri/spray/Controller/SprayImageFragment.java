@@ -107,7 +107,8 @@ public class SprayImageFragment extends Fragment {
                     itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new   Intent(getActivity(),DropBoxActivity.class);
+                           // Intent intent = new   Intent(getActivity(),DropBoxActivity.class);
+                            Intent intent = new   Intent(getActivity(),DropBoxNewActivity.class);
                             startActivityForResult(intent, 3);
 
                         }
@@ -240,6 +241,7 @@ public class SprayImageFragment extends Fragment {
         b.compress(Bitmap.CompressFormat.PNG, 100, bs);
 
         i.putExtra("imageByteArray", bs.toByteArray());
+        i.putStringArrayListExtra("usersIndex",((SprayMediaActivity)getActivity()).getChosenUsersIDs());
         startActivity(i);
 
 

@@ -1,5 +1,6 @@
 package com.bahri.spray.Controller;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -40,13 +41,15 @@ public class ImagePreviewActivity extends ActionBarActivity {
         sprayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendImage(MyModel.discoverdUsersIDSLocalArray,image);
-
+                sendImage(getIntent().getStringArrayListExtra("usersIndex"),image);
+                finish();
+                Intent intent = new Intent(ImagePreviewActivity.this,MainTabActivity.class);
+                startActivity(intent);
             }
         });
     }
 
-    private void sendImage(ArrayList<Integer> usersTosendTo,Bitmap bitmap) {
+    private void sendImage(ArrayList<String> usersTosendTo,Bitmap bitmap) {
         MyModel.getInstance().sendImageToUsers(usersTosendTo, bitmap);
     }
 

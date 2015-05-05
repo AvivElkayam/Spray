@@ -11,14 +11,26 @@ import android.widget.TabHost;
 
 import com.bahri.spray.R;
 
+import java.util.ArrayList;
+
 public class SprayMediaActivity extends ActionBarActivity {
     FragmentTabHost mTabHost;
+    private ArrayList<String> chosenUsersIDs;
+
+    public ArrayList<String> getChosenUsersIDs() {
+        return chosenUsersIDs;
+    }
+
+    public void setChosenUsersIDs(ArrayList<String> chosenUsersIDs) {
+        this.chosenUsersIDs = chosenUsersIDs;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(getString(R.string.orangeColor))));
         setContentView(R.layout.activity_spray_media_layout);
+        chosenUsersIDs = getIntent().getStringArrayListExtra("usersIndex");
         initTabs();
     }
 

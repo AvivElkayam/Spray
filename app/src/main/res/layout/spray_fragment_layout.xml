@@ -1,8 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/orange_background">
+
+    <ProgressBar
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:id="@+id/spray_progress_bar"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    <HorizontalScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="96dp"
+        android:id="@+id/spray_scroll_view"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp" >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spray_users_linear_layout"></LinearLayout>
+    </HorizontalScrollView>
 
     <TextView
         android:layout_width="fill_parent"
@@ -14,8 +39,10 @@
         android:layout_above="@+id/button2"
         android:layout_alignStart="@+id/close_users_text_view"
         android:gravity="left|center_vertical"
-        android:layout_marginTop="200dp"
-        android:layout_marginLeft="120dp" />
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="120dp"
+        android:textColor="@color/sprayPink"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,7 +53,8 @@
         android:textSize="15dp"
         android:layout_above="@+id/button2"
         android:layout_alignEnd="@+id/testBTtextView"
-        android:layout_marginLeft="120dp" />
+        android:layout_marginLeft="120dp"
+        android:textColor="@color/sprayPink"/>
 
     <Button
         android:layout_width="150dp"
@@ -51,7 +79,13 @@
         android:layout_alignStart="@+id/button2"
         android:layout_gravity="center_horizontal" />
 
-    <Button
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Button"
+            android:id="@+id/cellular_cell_button" />
+
+        <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Scan"
@@ -60,5 +94,8 @@
         android:layout_below="@+id/spray_to_button"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="70dp" />
+        android:layout_marginTop="20dp" />
+
+
 </LinearLayout>
+</FrameLayout>

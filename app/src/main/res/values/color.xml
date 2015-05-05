@@ -5,6 +5,7 @@
     <item name="purple" type="color">#FFAA66CC</item>
     <item name="green" type="color">#FF99CC00</item>
     <item name="orange" type="color">#F59025</item>
+    <item name="sprayPink" type="color">#CD0644</item>
     <item name="red" type="color">#FFFF4444</item>
     <item name="darkblue" type="color">#FF0099CC</item>
     <item name="darkpurple" type="color">#FF9933CC</item>
@@ -18,6 +19,7 @@
         <item>@color/purple</item>
         <item>@color/green</item>
         <item>@color/orange</item>
+        <item>@color/sprayPink</item>
         <item>@color/red</item>
         <item>@color/darkblue</item>
         <item>@color/darkpurple</item>
