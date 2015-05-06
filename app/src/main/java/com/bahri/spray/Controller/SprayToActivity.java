@@ -19,6 +19,8 @@ public class SprayToActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // overridePendingTransition(R.anim.left_out_animation, R.anim.left_out_animation);
+
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(getString(R.string.orangeColor))));
         getSupportActionBar().setTitle("Spray To");
         setContentView(R.layout.activity_spray_to_layout);
@@ -48,9 +50,8 @@ public class SprayToActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SprayToActivity.this, ChooseRecipientActivity.class);
-
                 startActivity(intent);
-                overridePendingTransition(R.anim.abc_slide_in_bottom, R.anim.abc_slide_in_top);
+
             }
         });
 

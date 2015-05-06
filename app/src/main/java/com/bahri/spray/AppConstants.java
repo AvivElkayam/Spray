@@ -1,26 +1,64 @@
 package com.bahri.spray;
 
+import android.animation.Animator;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.view.View;
+
 /**
  * Created by mac on 4/4/15.
  */
 public class AppConstants {
+    //
+    public static String OBJECT_ID = "objectId";
     //USER
     public static String USER = "User";
     public static String USER_MAJOR_ID =  "majorID";
+    public static String USER_IMAGE = "image";
+    public static String USER_LATITUDE = "Latitude";
+    public static String USER_LONGITUDE = "Longitude";
+    public static String USER_WIFI_BSSID = "WifiBSSID";
+    public static String USER_BLUETOOTH_MAC_ADDRESS = "BlueMac";
     //RELATIONS
     public static String RELATIONS = "Relations";
     public static String RELATIONS_BEACON_ID = "beaconID";
     public static String RELATIONS_DECIVE_ID = "deviceID";
-    //INSTAGRAM
-    public static String INSTAGRAM_CLIENT_ID = "ad7a62cd8d5449a98d8d4a4192b4f3ea";
-    public static String INSTAGRAM_SECRET_ID = "0989f04a6f4c433582fc6e2264da18f9";
-    private static final String AUTHURL = "https://api.instagram.com/oauth/authorize/";
-    //Used for Authentication.
-    private static final String TOKENURL ="https://api.instagram.com/oauth/access_token";
-    //Used for getting token and User details.
-    public static final String APIURL = "https://api.instagram.com/v1";
-    //Used to specify the API version which we are going to use.
-    public static String CALLBACKURL = "Your Redirect URI";
-//The callback url that we have used while registering the application.
+    //Items
+    public static String ITEMS = "Items";
+    public static String ITEMS_DISPLAY_NAME = "displayName";
+    public static String ITEMS_DEVICE_ID = "deviceID";
+    public static String ITEMS_BEACON_ID = "beaconID";
+    public static String ITEMS_ITEM = "Item";
+    public static String ITEMS_RECEIVER_ID = "receiverID";
+    public static String ITEMS_SENDER_ID = "senderID";
+
+    //Location
+    public static Integer distance = 100;
+    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
+                .getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = pixels;
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, pixels*6, pixels*6, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
+    }
 
 }

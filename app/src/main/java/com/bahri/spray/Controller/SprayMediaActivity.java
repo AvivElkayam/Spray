@@ -19,6 +19,15 @@ import java.util.ArrayList;
 
 public class SprayMediaActivity extends ActionBarActivity {
     FragmentTabHost mTabHost;
+    private ArrayList<String> chosenUsersIDs;
+
+    public ArrayList<String> getChosenUsersIDs() {
+        return chosenUsersIDs;
+    }
+
+    public void setChosenUsersIDs(ArrayList<String> chosenUsersIDs) {
+        this.chosenUsersIDs = chosenUsersIDs;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +39,7 @@ public class SprayMediaActivity extends ActionBarActivity {
         String type = intent.getType();
 
         setContentView(R.layout.activity_spray_media_layout);
+        chosenUsersIDs = getIntent().getStringArrayListExtra("usersIndex");
         initTabs();
 
 
@@ -75,7 +85,6 @@ public class SprayMediaActivity extends ActionBarActivity {
     private void initTabs()
     {
         setTitle("Spray To All");
-
         mTabHost = (FragmentTabHost)findViewById(R.id.spray_to_all_tab_host);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.spray_to_all_tabs_container);
         mTabHost.addTab(mTabHost.newTabSpec("Image").setIndicator("Image"),

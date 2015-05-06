@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,7 +25,11 @@ import android.widget.TextView;
 import com.bahri.spray.Model.MyModel;
 import com.bahri.spray.R;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+import com.squareup.picasso.Transformation;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -42,7 +47,8 @@ public class SprayImageFragment extends Fragment {
     ImageView imageView;
     int[] images = {
             R.drawable.spray,
-            R.drawable.media
+            R.drawable.media,
+            R.drawable.group
     };
     public class SprayImageArrayListAdapter extends ArrayAdapter<String>
     {
@@ -96,6 +102,20 @@ public class SprayImageFragment extends Fragment {
                     });
                     break;
                 }
+                case 2:
+                {
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                           // Intent intent = new   Intent(getActivity(),DropBoxActivity.class);
+                            Intent intent = new   Intent(getActivity(),DropBoxNewActivity.class);
+                            startActivityForResult(intent, 3);
+
+                        }
+                    });
+                    break;
+
+                }
             }
             return itemView;
         }
@@ -106,7 +126,7 @@ public class SprayImageFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
             if (requestCode == 1) {
-                //from library
+                //from camera
                 File f = new File(Environment.getExternalStorageDirectory().toString());
                 for (File temp : f.listFiles()) {
                     if (temp.getName().equals("temp.jpg")) {
@@ -120,9 +140,34 @@ public class SprayImageFragment extends Fragment {
 
                     bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
                             bitmapOptions);
+//                    Picasso.with(getActivity())
+//                            .load(f)
+//                            .resize(imageView.getWidth(), imageView.getHeight())
+//                            .centerCrop()
+//                            .into(imageView);
+//                    Target target = new Target() {
+//                        @Override
+//                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+//                            imageView.setImageBitmap(bitmap);
+//                            Drawable image = imageView.getDrawable();
+//                        }
+//
+//                        @Override
+//                        public void onBitmapFailed(Drawable errorDrawable) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+//
+//                        }
+//                    };
+//
+//                    Picasso.with(getActivity()).load(f).into(target);
+
 
                     imageView.setImageBitmap(bitmap);
-
+                    //putBitmapToIntentAndStartActivity(bitmap);
                     String path = android.os.Environment
                             .getExternalStorageDirectory()
                             + File.separator
@@ -132,7 +177,7 @@ public class SprayImageFragment extends Fragment {
                     File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
                     try {
                         outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outFile);
                         outFile.flush();
                         outFile.close();
                     } catch (FileNotFoundException e) {
@@ -156,7 +201,7 @@ public class SprayImageFragment extends Fragment {
                 c.close();
                 Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
                 imageView.setImageBitmap(thumbnail);
-
+                putBitmapToIntentAndStartActivity(thumbnail);
 
             }
 
@@ -180,16 +225,42 @@ public class SprayImageFragment extends Fragment {
         cellTitleArrayList = new ArrayList<String>();
         cellTitleArrayList.add("Take a picture");
         cellTitleArrayList.add("Photo library");
+        cellTitleArrayList.add("From DropBox");
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return  inflater.inflate(R.layout.fragment_spray_image_layout, container, false);
     }
+    private void putBitmapToIntentAndStartActivity(Bitmap bitmap)
+    {
+        Intent i = new Intent(getActivity(), ImagePreviewActivity.class);
+        Bitmap b=scaleDown(bitmap,400,true); // your bitmap
+        ByteArrayOutputStream bs = new ByteArrayOutputStream();
+        b.compress(Bitmap.CompressFormat.PNG, 100, bs);
 
     public void setImageFromUri(Uri uri){
 
         imageView.setImageURI(uri);
     }
 
+        i.putExtra("imageByteArray", bs.toByteArray());
+        i.putStringArrayListExtra("usersIndex",((SprayMediaActivity)getActivity()).getChosenUsersIDs());
+        startActivity(i);
+
+
+    }
+    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize,
+                                   boolean filter) {
+        float ratio = Math.min(
+                (float) maxImageSize / realImage.getWidth(),
+                (float) maxImageSize / realImage.getHeight());
+        int width = Math.round((float) ratio * realImage.getWidth());
+        int height = Math.round((float) ratio * realImage.getHeight());
+
+        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
+                height, filter);
+        return newBitmap;
+    }
 }

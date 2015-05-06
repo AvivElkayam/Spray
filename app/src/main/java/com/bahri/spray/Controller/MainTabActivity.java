@@ -35,6 +35,8 @@ public class MainTabActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        //overridePendingTransition(R.anim.left_out_animation, R.anim.right__out_animation);
+        Log.w("S","main tab on create");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(getString(R.string.orangeColor))));
         MyModel.getInstance().setMainTabActivity(this);
         setContentView(R.layout.activity_tab_test_activity);
@@ -43,6 +45,7 @@ public class MainTabActivity extends ActionBarActivity {
         setTitleColor(Color.WHITE);
 //
       //  Log.i("Fragment manger size", "zzz" + getSupportFragmentManager().getFragments().size());
+
 
 
     }
@@ -147,6 +150,7 @@ public class MainTabActivity extends ActionBarActivity {
 
             }
         });
+       // mTabHost.setCurrentTab(getIntent().getIntExtra("tab",0));
     }
 
     @Override
@@ -169,5 +173,9 @@ public class MainTabActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    public void upateWifiBSSID(String s)
+    {
+        MyModel.getInstance().updateWifi(s);
     }
 }

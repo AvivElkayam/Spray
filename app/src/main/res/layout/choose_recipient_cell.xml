@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="66dp">
 
     <CheckBox
-        android:layout_width="fill_parent"
+        android:layout_width="30dp"
         android:layout_height="fill_parent"
         android:id="@+id/choose_recipient_cell_check_box"
-        android:singleLine="true"
-        android:layout_weight="4"
-        android:layout_marginLeft="20dp" />
+        android:singleLine="true" />
 
-    <TextView
-        android:layout_width="fill_parent"
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:id="@+id/choose_recipient_cel_image_view"
+        android:layout_gravity="center_vertical" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/choose_recipient_cell_name_text_view"
-        android:gravity="center_vertical"
-        android:layout_weight="1" />
+        android:layout_marginLeft="10dp">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/choose_recipient_cell_name_text_view"
+            android:gravity="center_vertical"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/choose_recipient_cell_distance_text_view"
+            android:layout_weight="1"
+            android:textSize="15dp" />
+    </LinearLayout>
 
 </LinearLayout>

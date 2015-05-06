@@ -1,7 +1,14 @@
 package com.bahri.spray.Controller;
 
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,17 +16,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bahri.spray.Model.MyModel;
 import com.bahri.spray.R;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class LoginActivity extends ActionBarActivity {
 
     // Declare Variables
     Button loginbutton;
     Button signup;
-    Button img;
     String usernametxt;
     String passwordtxt;
     EditText password;
@@ -27,7 +40,7 @@ public class LoginActivity extends ActionBarActivity {
     int cUser;
     BluetoothAdapter mBluetoothAdapter;
     String address;
-
+    ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +69,7 @@ public class LoginActivity extends ActionBarActivity {
 
                 // Locate Buttons in main.xml
         loginbutton = (Button) findViewById(R.id.login);
-        signup = (Button) findViewById(R.id.signup);
-        img = (Button) findViewById(R.id.img);
+        signup = (Button) findViewById(R.id.signup_signup_button);
 
 
 
@@ -83,7 +95,10 @@ public class LoginActivity extends ActionBarActivity {
 
             }
         });
+
     }
+
+
 
     public void loginSucces(){
         // If user exist and authenticated, send user to Welcome.class
