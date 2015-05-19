@@ -122,8 +122,12 @@ public class MainTabActivity extends ActionBarActivity {
 
         mTabHost.addTab(mTabHost.newTabSpec("SprayFragment").setIndicator("", getResources().getDrawable(R.drawable.spray)),
                 SprayFragment.class, null);
-
-
+        mTabHost.addTab(mTabHost.newTabSpec("MediaFragment").setIndicator("", getResources().getDrawable(R.drawable.media)),
+                MediaFragment.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec("GroupsFragment").setIndicator("", getResources().getDrawable(R.drawable.group)),
+                GroupFragment.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec("SettingsFragment").setIndicator("", getResources().getDrawable(R.drawable.settings)),
+                SettingsFragment.class, null);
         for(int i=0;i<mTabHost.getTabWidget().getChildCount();i++)
         {
             mTabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#E0E0E0")); //unselected
