@@ -29,34 +29,66 @@
             android:id="@+id/spray_users_linear_layout"></LinearLayout>
     </HorizontalScrollView>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="My location"
-        android:textSize="15dp"
-        android:id="@+id/location_text_view_id"
-        android:layout_above="@+id/button2"
-        android:layout_alignStart="@+id/close_users_text_view"
-        android:gravity="left|center_vertical"
-        android:layout_marginTop="120dp"
-        android:layout_marginLeft="120dp"
-        android:textColor="@color/sprayPink"
-        />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="41dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="0 people around you"
-        android:id="@+id/close_users_text_view"
-        android:textSize="15dp"
-        android:layout_above="@+id/button2"
-        android:layout_alignEnd="@+id/testBTtextView"
-        android:layout_marginLeft="120dp"
-        android:textColor="@color/sprayPink"/>
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:id="@+id/imageView2"
+                android:background="@drawable/location_icon29"
+                android:layout_gravity="center|right"
+                android:layout_marginLeft="96dp" />
 
-    <Button
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="My location"
+                android:textSize="15dp"
+                android:id="@+id/location_text_view_id"
+                android:layout_above="@+id/button2"
+                android:layout_alignStart="@+id/close_users_text_view"
+                android:textColor="@color/sprayPink"
+                android:gravity="left|center_vertical"
+                android:layout_marginLeft="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="49dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:id="@+id/imageView3"
+                android:background="@drawable/world_icon29"
+                android:layout_gravity="center"
+                android:layout_marginLeft="100dp" />
+
+            <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0 people around you"
+            android:id="@+id/close_users_text_view"
+            android:textSize="15dp"
+            android:layout_above="@+id/button2"
+            android:layout_alignEnd="@+id/testBTtextView"
+                android:textColor="@color/sprayPink"
+                android:gravity="left|center_vertical"
+                android:layout_marginLeft="5dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView" />
+
+        <Button
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="3 New Items"
@@ -83,19 +115,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Button"
-            android:id="@+id/cellular_cell_button" />
+            android:id="@+id/cellular_cell_button"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
 
-        <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Scan"
-        android:id="@+id/scan_button"
-        android:gravity="center"
-        android:layout_below="@+id/spray_to_button"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Scan"
+            android:id="@+id/scan_button"
+            android:gravity="center"
+            android:layout_below="@+id/spray_to_button"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+                android:background="@drawable/pink_button"
+                android:textColor="#ffffffff"
+                android:layout_marginTop="5dp" />
+
+        </FrameLayout>
 
 
-</LinearLayout>
+    </LinearLayout>
 </FrameLayout>

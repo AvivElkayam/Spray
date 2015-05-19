@@ -46,9 +46,9 @@ public class SprayImageFragment extends Fragment {
     SprayImageArrayListAdapter adapter;
     ImageView imageView;
     int[] images = {
-            R.drawable.spray,
-            R.drawable.media,
-            R.drawable.group
+            R.drawable.takepic_icon29,
+            R.drawable.gallery_icon29,
+            R.drawable.dropbox_icon29
     };
     public class SprayImageArrayListAdapter extends ArrayAdapter<String>
     {
@@ -137,34 +137,9 @@ public class SprayImageFragment extends Fragment {
                 try {
                     Bitmap bitmap;
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-
                     bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
                             bitmapOptions);
-//                    Picasso.with(getActivity())
-//                            .load(f)
-//                            .resize(imageView.getWidth(), imageView.getHeight())
-//                            .centerCrop()
-//                            .into(imageView);
-//                    Target target = new Target() {
-//                        @Override
-//                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-//                            imageView.setImageBitmap(bitmap);
-//                            Drawable image = imageView.getDrawable();
-//                        }
 //
-//                        @Override
-//                        public void onBitmapFailed(Drawable errorDrawable) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-//
-//                        }
-//                    };
-//
-//                    Picasso.with(getActivity()).load(f).into(target);
-
 
                     imageView.setImageBitmap(bitmap);
                     //putBitmapToIntentAndStartActivity(bitmap);
@@ -236,10 +211,10 @@ public class SprayImageFragment extends Fragment {
     private void putBitmapToIntentAndStartActivity(Bitmap bitmap)
     {
         Intent i = new Intent(getActivity(), ImagePreviewActivity.class);
-        Bitmap b=scaleDown(bitmap,400,true); // your bitmap
+        //Bitmap b=scaleDown(bitmap,300,true); // your bitmap
+        Bitmap b=bitmap;
         ByteArrayOutputStream bs = new ByteArrayOutputStream();
         b.compress(Bitmap.CompressFormat.PNG, 100, bs);
-
         i.putExtra("imageByteArray", bs.toByteArray());
         i.putStringArrayListExtra("usersIndex",((SprayMediaActivity)getActivity()).getChosenUsersIDs());
         startActivity(i);

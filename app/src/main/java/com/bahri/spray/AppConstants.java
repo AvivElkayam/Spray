@@ -16,6 +16,7 @@ import android.view.View;
 public class AppConstants {
     //
     public static String OBJECT_ID = "objectId";
+    public static String UPDATED_AT = "updatedAt";
     //USER
     public static String USER = "User";
     public static String USER_MAJOR_ID =  "majorID";

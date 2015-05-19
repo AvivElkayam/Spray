@@ -4,10 +4,12 @@
     android:layout_height="64dp">
 
     <ImageView
-        android:layout_width="64dp"
-        android:layout_height="fill_parent"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:id="@+id/spray_image_cell_image"
-        android:background="@drawable/media" />
+        android:background="@drawable/media"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:layout_width="match_parent"

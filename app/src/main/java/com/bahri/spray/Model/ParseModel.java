@@ -63,6 +63,7 @@ public class ParseModel implements MyModel.ModelInterface {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
                 // Add the name and address to an array adapter to show in a ListView
                 //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
             }
@@ -273,7 +274,7 @@ public class ParseModel implements MyModel.ModelInterface {
                                         e1.printStackTrace();
                                     }
                                 }
-                                mainTabActivity.startScanAndTransmit();
+                                //mainTabActivity.startScanAndTransmit();
                             } else {
                             }
                         }
@@ -365,7 +366,8 @@ public class ParseModel implements MyModel.ModelInterface {
             imgupload.saveInBackground();
             sendPush(s);
         }
-            sendPush(ParseUser.getCurrentUser().getObjectId());
+           //
+           // sendPush(ParseUser.getCurrentUser().getObjectId());
         // Create a New Class called "ImageUpload" in Parse
 
 
@@ -401,7 +403,7 @@ public class ParseModel implements MyModel.ModelInterface {
         // Locate the class table named "ImageUpload" in Parse.com
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                 AppConstants.ITEMS);
-        query.whereEqualTo(AppConstants.ITEMS_DEVICE_ID,ParseUser.getCurrentUser().get(AppConstants.USER_MAJOR_ID));
+        query.whereEqualTo(AppConstants.ITEMS_RECEIVER_ID,ParseUser.getCurrentUser().getObjectId());
         // Locate the objectId from the class
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -512,8 +514,7 @@ public class ParseModel implements MyModel.ModelInterface {
                     e1.printStackTrace();
                 }
             }
-                MyModel.discoverdUsers.clear();
-
+                mainTabActivity.updateCloseUsersTextView();
             }
         });
 
@@ -523,6 +524,7 @@ public class ParseModel implements MyModel.ModelInterface {
     public void updateBluetoothMACAddress(String macAddress) {
         ParseQuery query = new ParseUser().getQuery();
         try {
+
             ParseObject parseObject = query.get(ParseUser.getCurrentUser().getObjectId());
             parseObject.put(AppConstants.USER_BLUETOOTH_MAC_ADDRESS,macAddress);
             parseObject.saveInBackground();
@@ -536,36 +538,59 @@ public class ParseModel implements MyModel.ModelInterface {
         ParseQuery query = ParseUser.getQuery();
         query.whereNotEqualTo(AppConstants.OBJECT_ID, ParseUser.getCurrentUser().getObjectId());
         query.whereEqualTo(AppConstants.USER_BLUETOOTH_MAC_ADDRESS, macAddress);
+        query.orderByAscending(AppConstants.UPDATED_AT);
         query.findInBackground(new FindCallback() {
             @Override
             public void done(List list, ParseException e) {
-                for (int i = 0; i < list.size(); i++) {
-                    ParseUser user = (ParseUser) list.get(i);
+                new AsyncTask<List<ParseObject>, String, String>() {
+                    @Override
+                    protected String doInBackground(List<ParseObject>... params) {
+                        if(params[0].size()>0) {
+                            ParseUser user = (ParseUser) params[0].get(0);
 
-                    ParseFile file = (ParseFile) user.get(AppConstants.USER_IMAGE);
+                            ParseFile file = (ParseFile) user.get(AppConstants.USER_IMAGE);
 
-                    try {
-                        if (file != null) {
-                            byte[] bytes = file.getData();
-                            Bitmap bmp = BitmapFactory
-                                    .decodeByteArray(
-                                            bytes, 0,
-                                            bytes.length);
-                            SprayUser sprayUser = new SprayUser((String) user.get("username"), user.getObjectId(), (Integer) user.get(AppConstants.USER_MAJOR_ID), bmp,0);
-                            MyModel.discoverdUsers.add(sprayUser);
-                            mainTabActivity.updateCloseUsersTextView();
+                            try {
+                                if (file != null) {
+                                    byte[] bytes = file.getData();
 
-                        } else {
-                            SprayUser sprayUser = new SprayUser((String) user.get("username"), user.getObjectId(), ((Integer) user.get(AppConstants.USER_MAJOR_ID)), null, 0);
-                            MyModel.discoverdUsers.add(sprayUser);
-                            mainTabActivity.updateCloseUsersTextView();
+                                    Bitmap bmp = BitmapFactory
+                                            .decodeByteArray(
+                                                    bytes, 0,
+                                                    bytes.length);
+                                    SprayUser sprayUser = new SprayUser((String) user.get("username"), user.getObjectId(), (Integer) user.get(AppConstants.USER_MAJOR_ID), bmp,0);
+                                    MyModel.discoverdUsers.add(sprayUser);
+
+
+                                } else {
+                                    SprayUser sprayUser = new SprayUser((String) user.get("username"), user.getObjectId(), ((Integer) user.get(AppConstants.USER_MAJOR_ID)), null, 0);
+                                    MyModel.discoverdUsers.add(sprayUser);
+                                 //   mainTabActivity.updateCloseUsersTextView();
+                                }
+                            }
+                            catch (ParseException e1) {
+                                //e1.printStackTrace();
+
+                            }
                         }
+
+
+
+                        return null;
                     }
-                    catch (ParseException e1) {
-                        e1.printStackTrace();
+
+                    @Override
+                    protected void onPostExecute(String s) {
+                        mainTabActivity.updateCloseUsersTextView();
+                        super.onPostExecute(s);
                     }
-                }
-                MyModel.discoverdUsers.clear();
+                }.execute(list);
+
+
+
+
+
+
 
             }
         });

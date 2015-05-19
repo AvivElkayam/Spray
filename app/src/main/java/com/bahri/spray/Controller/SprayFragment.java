@@ -52,50 +52,36 @@ public class SprayFragment extends Fragment implements LocationListener {
     Geocoder geocoder;
     String locationText = "My Location";
     Button sprayButton,scanButton;
-    BluetoothAdapter mBluetoothAdapter;
-    BluetoothLeAdvertiser mLeAdvertiser;
-    BluetoothDevice device;
+
     LinearLayout usersLinearLayout;
     ProgressBar progressBar;
     String myBSSID;
     WifiManager mainWifiObj;
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            // When discovery finds a device
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                // Get the BluetoothDevice object from the Intent
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                MyModel.getInstance().getCloseUsersByBluetooth(device.getAddress());
-                // Add the name and address to an array adapter to show in a ListView
-                //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-            }
-        }
-    };
-    private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
-        @Override
-        public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
-            // your implementation here
-            String s = device.getName();
-            //textView.setText("id:  "+device.getName()+"   "+device.getType());
 
-            //MyModel.getInstance().updateRelationsInServer(Integer.parseInt(device.getName()));
-            if(device.getName()!=null)
-            {
-                if(!checkIfUserExistInLocalArray(Integer.parseInt(device.getName())))
-                {
-                    MyModel.discoverdUsersIDSLocalArray.add(Integer.parseInt(device.getName()));
-                    MyModel.getInstance().updateRelationsInServer(Integer.parseInt(device.getName()));
-                    Log.w("myApp", "device discoverd: "+device.getName()+" "+device.getUuids());
-                    ParcelUuid[] p = device.getUuids();
-                    //textView.setText("discoverd: "+device.getName()+" "+device.getAddress()
-                   // );
-                }
-            }
-
-
-        }
-    };
+//    private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
+//        @Override
+//        public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
+//            // your implementation here
+//            String s = device.getName();
+//            //textView.setText("id:  "+device.getName()+"   "+device.getType());
+//
+//            //MyModel.getInstance().updateRelationsInServer(Integer.parseInt(device.getName()));
+//            if(device.getName()!=null)
+//            {
+//                if(!checkIfUserExistInLocalArray(Integer.parseInt(device.getName())))
+//                {
+//                    MyModel.discoverdUsersIDSLocalArray.add(Integer.parseInt(device.getName()));
+//                    MyModel.getInstance().updateRelationsInServer(Integer.parseInt(device.getName()));
+//                    Log.w("myApp", "device discoverd: "+device.getName()+" "+device.getUuids());
+//                    ParcelUuid[] p = device.getUuids();
+//                    //textView.setText("discoverd: "+device.getName()+" "+device.getAddress()
+//                   // );
+//                }
+//            }
+//
+//
+//        }
+//    };
 
     private boolean checkIfUserExistInLocalArray(Integer id)
     {
@@ -109,30 +95,30 @@ public class SprayFragment extends Fragment implements LocationListener {
         return false;
     }
 
-    public void startScanAndTransmit()
-    {
-        UUID[] uuids = new UUID[1];
-        uuids[0] = UUID.fromString("11DA3FD1-7E10-41C1-B16F-4430B506CDE7");
-
-        mBluetoothAdapter.startLeScan(uuids,leScanCallback);
-        mBluetoothAdapter.startLeScan(leScanCallback);
-        Log.w("startedScanning","Started Scaninng");
-//        new Thread() {
-//            public void run() {
-//                /* block of code which need to execute via thread */
-//                for (int i=0;i<3;i++)
-//                {
+//    public void startScanAndTransmit()
+//    {
+//        UUID[] uuids = new UUID[1];
+//        uuids[0] = UUID.fromString("11DA3FD1-7E10-41C1-B16F-4430B506CDE7");
 //
-//                    try {
-//                        MyModel.getInstance().getCloseUsers();
-//                        sleep(4000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }.start();
-    }
+//        mBluetoothAdapter.startLeScan(uuids,leScanCallback);
+//        mBluetoothAdapter.startLeScan(leScanCallback);
+//        Log.w("startedScanning","Started Scaninng");
+////        new Thread() {
+////            public void run() {
+////                /* block of code which need to execute via thread */
+////                for (int i=0;i<3;i++)
+////                {
+////
+////                    try {
+////                        MyModel.getInstance().getCloseUsers();
+////                        sleep(4000);
+////                    } catch (InterruptedException e) {
+////                        e.printStackTrace();
+////                    }
+////                }
+////            }
+////        }.start();
+//    }
     public void updateCloseUsersTextView()
     {
 //        if(progressBar.isShowing())
@@ -171,7 +157,7 @@ public class SprayFragment extends Fragment implements LocationListener {
     private ActionBar actionBar;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
 
         getActivity().setTitle("Spray");
         return inflater.inflate(R.layout.spray_fragment_layout,container,false);
@@ -180,7 +166,7 @@ public class SprayFragment extends Fragment implements LocationListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initBluetooth();
+
         initWifiManger();
         initLocation();
         initViews();
@@ -195,31 +181,7 @@ public class SprayFragment extends Fragment implements LocationListener {
 
        // getCloseUsersByGPS();
     }
-    public void initBluetooth()
-    {
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        MyModel.getInstance().updateBluetoothMACAddress(mBluetoothAdapter.getAddress());
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        getActivity().registerReceiver(mReceiver, filter);
-        Intent discoverableIntent = new
-                Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-        startActivity(discoverableIntent);// Don't forget to unregister during onDestroy
-//        // Initializes Bluetooth adapter.
-//        final BluetoothManager bluetoothManager =
-//                (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-//        mBluetoothAdapter = bluetoothManager.getAdapter();
-//
-//// Ensures Bluetooth is available on the device and it is enabled. If not,
-//// displays a dialog requesting user permission to enable Bluetooth.
-//        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
-//            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(enableBtIntent, 1);
-//
-//
-//        }
 
-    }
     public void initViews()
     {
         locationTextView = (TextView) getActivity().findViewById(R.id.location_text_view_id);
@@ -251,9 +213,9 @@ public class SprayFragment extends Fragment implements LocationListener {
 
                 usersLinearLayout.removeAllViews();
                 MyModel.discoverdUsers.clear();
-                //getUsersConnectedToMyWifi();
+                getUsersConnectedToMyWifi();
                 //getCloseUsersByGPS();
-                getCloseUsersByBluetooth();
+                //getCloseUsersByBluetooth();
 
 
             }
@@ -280,6 +242,7 @@ public class SprayFragment extends Fragment implements LocationListener {
 
         WifiInfo d = mainWifiObj.getConnectionInfo();
         myBSSID = d.getBSSID();
+        MyModel.getInstance().updateWifi(myBSSID);
         if(myBSSID==null) {
             MyModel.getInstance().updateWifi("nowifi");
         }
@@ -326,7 +289,7 @@ public class SprayFragment extends Fragment implements LocationListener {
     private void getCloseUsersByGPS()
     {
         //MyModel.getInstance().getCloseUsers();
-        MyModel.discoverdUsers.clear();
+       // MyModel.discoverdUsers.clear();
         MyModel.getInstance().getCloseUsersByGPS();
         //MyModel.getInstance().getCloseUsersConectedToSameWifi(myBSSID);
 //                progressBar = new ProgressDialog(getActivity());
@@ -374,8 +337,7 @@ public class SprayFragment extends Fragment implements LocationListener {
         }
             if(addresses!=null)
                 locationText =
-                        addresses.get(0).getThoroughfare() + " "
-                                + addresses.get(0).getSubThoroughfare() + ", "
+                        addresses.get(0).getThoroughfare() + ", "
                                 + addresses.get(0).getLocality();
                 locationTextView.setText(locationText);
 
@@ -419,10 +381,9 @@ public class SprayFragment extends Fragment implements LocationListener {
     }
     private void getCloseUsersByBluetooth()
     {
-        int REQUEST_ENABLE_BT = 3;
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+       // MyModel.discoverdUsers.clear();
+        if (!((MainTabActivity)getActivity()).getmBluetoothAdapter().isEnabled()) {
+            ((MainTabActivity)getActivity()).requestBluetoothEnable();
         }
         else
         {
@@ -437,7 +398,7 @@ public class SprayFragment extends Fragment implements LocationListener {
 //            usersLinearLayout.removeAllViews();
 //            MyModel.getInstance().getCloseUserByBluetooth();
             //l
-            mBluetoothAdapter.startDiscovery();
+            ((MainTabActivity)getActivity()).startDiscovery();
         }
     }
 
