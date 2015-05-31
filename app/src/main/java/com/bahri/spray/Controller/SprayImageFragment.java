@@ -240,10 +240,7 @@ public class SprayImageFragment extends Fragment {
         ByteArrayOutputStream bs = new ByteArrayOutputStream();
         b.compress(Bitmap.CompressFormat.PNG, 100, bs);
 
-    public void setImageFromUri(Uri uri){
 
-        imageView.setImageURI(uri);
-    }
 
         i.putExtra("imageByteArray", bs.toByteArray());
         i.putStringArrayListExtra("usersIndex",((SprayMediaActivity)getActivity()).getChosenUsersIDs());
@@ -251,6 +248,11 @@ public class SprayImageFragment extends Fragment {
 
 
     }
+    public void setImageFromUri(Uri uri){
+
+        imageView.setImageURI(uri);
+    }
+
     public static Bitmap scaleDown(Bitmap realImage, float maxImageSize,
                                    boolean filter) {
         float ratio = Math.min(
