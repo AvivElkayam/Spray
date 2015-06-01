@@ -19,6 +19,7 @@ public class AppConstants {
     public static String UPDATED_AT = "updatedAt";
     //USER
     public static String USER = "User";
+
     public static String USER_MAJOR_ID =  "majorID";
     public static String USER_IMAGE = "image";
     public static String USER_LATITUDE = "Latitude";
