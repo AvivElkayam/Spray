@@ -62,21 +62,23 @@ public class MainTabActivity extends ActionBarActivity {
         registerReceiver(mReceiver, filter);
         Intent discoverableIntent = new
                 Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
-        startActivity(discoverableIntent);// Don't forget to unregister during onDestroy
-//        // Initializes Bluetooth adapter.
-//        final BluetoothManager bluetoothManager =
-//                (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-//        mBluetoothAdapter = bluetoothManager.getAdapter();
-//
-//// Ensures Bluetooth is available on the device and it is enabled. If not,
-//// displays a dialog requesting user permission to enable Bluetooth.
-//        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
-//            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(enableBtIntent, 1);
-//
-//
-//        }
+
+
+        if(mBluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE)
+        {
+            // (If your BTDiscoverable is this equivalent if this, you can use it)
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
+            startActivity(discoverableIntent);
+
+        }
+        else
+        {
+            /*
+             * As the bluetooth is now on and the device can be connected/discovered, USER MUST START THE SERVER SITE ON DEVICE BY
+             * CREATING NEW THREAD
+             */
+
+        }
 
     }
     @Override
@@ -92,7 +94,7 @@ public class MainTabActivity extends ActionBarActivity {
         initTabs();
         actionBar=getSupportActionBar();
         setTitleColor(Color.WHITE);
-       // initBluetooth();
+        initBluetooth();
 
 
     }

@@ -5,11 +5,30 @@
     android:background="@drawable/orange_background">
 
     <ProgressBar
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
         android:layout_gravity="center"
         android:id="@+id/spray_progress_bar"
         android:visibility="invisible" />
+    <com.skyfishjy.library.RippleBackground
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/cool_progress_bar"
+        app:rb_color="#0099CC"
+        app:rb_radius="100dp"
+        app:rb_rippleAmount="4"
+        app:rb_duration="3000"
+        app:rb_scale="6"
+        >
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/centerImage"
+            android:src="@drawable/logo_final"/>
+    </com.skyfishjy.library.RippleBackground>
 
     <LinearLayout
         android:orientation="vertical"

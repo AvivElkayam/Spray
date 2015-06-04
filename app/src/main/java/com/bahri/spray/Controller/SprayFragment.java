@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.bahri.spray.Model.MyModel;
 import com.bahri.spray.R;
 import com.bahri.spray.SprayUser;
+import com.skyfishjy.library.RippleBackground;
 
 import java.io.IOException;
 import java.util.List;
@@ -52,11 +53,11 @@ public class SprayFragment extends Fragment implements LocationListener {
     Geocoder geocoder;
     String locationText = "My Location";
     Button sprayButton,scanButton;
-
     LinearLayout usersLinearLayout;
     ProgressBar progressBar;
     String myBSSID;
     WifiManager mainWifiObj;
+    RippleBackground rippleBackground;
 
 //    private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
 //        @Override
@@ -123,6 +124,8 @@ public class SprayFragment extends Fragment implements LocationListener {
     {
 //        if(progressBar.isShowing())
 //        progressBar.dismiss();
+        rippleBackground.stopRippleAnimation();
+
         progressBar.setVisibility(View.GONE);
         closeUsersTextView.setText(MyModel.discoverdUsers.size() + " People around you");
         usersLinearLayout.removeAllViews();
@@ -192,6 +195,7 @@ public class SprayFragment extends Fragment implements LocationListener {
             MyModel.getInstance().updateLocation(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
 
         }
+        rippleBackground = (RippleBackground)getActivity().findViewById(R.id.cool_progress_bar);
         usersLinearLayout = (LinearLayout)getActivity().findViewById(R.id.spray_users_linear_layout);
         progressBar = (ProgressBar)getActivity().findViewById(R.id.spray_progress_bar);
         closeUsersTextView = (TextView)getActivity().findViewById(R.id.close_users_text_view);
@@ -210,7 +214,6 @@ public class SprayFragment extends Fragment implements LocationListener {
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 usersLinearLayout.removeAllViews();
                 MyModel.discoverdUsers.clear();
                 getUsersConnectedToMyWifi();
@@ -242,9 +245,13 @@ public class SprayFragment extends Fragment implements LocationListener {
 
         WifiInfo d = mainWifiObj.getConnectionInfo();
         myBSSID = d.getBSSID();
-        MyModel.getInstance().updateWifi(myBSSID);
+
         if(myBSSID==null) {
             MyModel.getInstance().updateWifi("nowifi");
+        }
+        else
+        {
+            MyModel.getInstance().updateWifi(myBSSID);
         }
 //        String d2 =s2  ;
 
@@ -260,7 +267,7 @@ public class SprayFragment extends Fragment implements LocationListener {
     private void initWifiConnectionEvents(Intent intent)
     {
         final String action = intent.getAction();
-        if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
+//        if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
             if (intent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false)){
                 //do stuff        WifiInfo d = mainWifiObj.getConnectionInfo();
                 WifiInfo d = mainWifiObj.getConnectionInfo();
@@ -271,10 +278,16 @@ public class SprayFragment extends Fragment implements LocationListener {
                 MyModel.getInstance().updateWifi("nowifi");
 
             }
-        }
+
     }
     private void getUsersConnectedToMyWifi()
     {
+        ImageView imageView=(ImageView)getActivity().findViewById(R.id.centerImage);
+
+                rippleBackground.startRippleAnimation();
+
+
+
         if(myBSSID!=null) {
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setIndeterminate(true);
