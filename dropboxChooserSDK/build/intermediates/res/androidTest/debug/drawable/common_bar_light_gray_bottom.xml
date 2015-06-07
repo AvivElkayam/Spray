@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/barLightBorder"/>
+        </shape>
+    </item>
+    <item android:top="1px">
+        <shape>
+            <solid android:color="@color/barLight"/>
+        </shape>
+    </item>
+</layer-list>
+<!-- From: file:/C:/Users/bahri/Documents/GitHub/Spray1.3%202/Spray1.3/Spray/dropboxChooserSDK/src/main/res/drawable/common_bar_light_gray_bottom.xml --><!-- From: file:/C:/Users/bahri/Documents/GitHub/Spray1.3%202/Spray1.3/Spray/dropboxChooserSDK/build/intermediates/bundles/debug/res/drawable/common_bar_light_gray_bottom.xml -->
