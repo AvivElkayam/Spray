@@ -216,8 +216,8 @@ public class SprayFragment extends Fragment implements LocationListener {
             public void onClick(View v) {
                 usersLinearLayout.removeAllViews();
                 MyModel.discoverdUsers.clear();
-                getUsersConnectedToMyWifi();
-                //getCloseUsersByGPS();
+               // getUsersConnectedToMyWifi();
+                getCloseUsersByGPS();
                 //getCloseUsersByBluetooth();
 
 

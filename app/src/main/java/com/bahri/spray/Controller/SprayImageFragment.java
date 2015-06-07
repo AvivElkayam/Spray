@@ -142,7 +142,7 @@ public class SprayImageFragment extends Fragment {
 //
 
                     imageView.setImageBitmap(bitmap);
-                    //putBitmapToIntentAndStartActivity(bitmap);
+                    putBitmapToIntentAndStartActivity(bitmap);
                     String path = android.os.Environment
                             .getExternalStorageDirectory()
                             + File.separator
@@ -214,9 +214,10 @@ public class SprayImageFragment extends Fragment {
         //Bitmap b=scaleDown(bitmap,300,true); // your bitmap
         Bitmap b=bitmap;
         ByteArrayOutputStream bs = new ByteArrayOutputStream();
-        b.compress(Bitmap.CompressFormat.PNG, 100, bs);
+ //       boolean compress = b.compress(Bitmap.CompressFormat.PNG, 100, bs);
         i.putExtra("imageByteArray", bs.toByteArray());
         i.putStringArrayListExtra("usersIndex",((SprayMediaActivity)getActivity()).getChosenUsersIDs());
+        MyModel.getInstance().sendImageToUsers(((SprayMediaActivity)getActivity()).getChosenUsersIDs(), bitmap);
         startActivity(i);
 
 
