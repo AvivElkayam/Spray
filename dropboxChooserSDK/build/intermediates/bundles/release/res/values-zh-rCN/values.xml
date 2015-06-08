@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/user/Documents/GitHub/Spray/dropboxChooserSDK/src/main/res/values-zh-rCN/strings.xml -->
+    <!-- From: file:/C:/Users/bahri/Documents/GitHub/Spray1.3%202/Spray1.3/Spray/dropboxChooserSDK/src/main/res/values-zh-rCN/strings.xml -->
     <eat-comment/>
     <string name="dbx_install">安装 Dropbox</string>
     <string name="dbx_install_button_cancel">取消</string>

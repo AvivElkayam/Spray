@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="https://android.dropbox.com/StringsSchema">
-    <!-- From: file:/C:/Users/user/Documents/GitHub/Spray/dropboxChooserSDK/src/main/res/values/color.xml -->
+    <!-- From: file:/C:/Users/bahri/Documents/GitHub/Spray1.3%202/Spray1.3/Spray/dropboxChooserSDK/src/main/res/values/color.xml -->
     <eat-comment/>
     <color name="actionBarBackground">#007de3</color>
     <color name="actionBarHighlight">#000000</color>
@@ -77,11 +77,11 @@
     <color ns1:default="#AA000000" ns1:samsung="#ff000000" name="videoIconDetailsBackground">#AA000000</color>
     <color name="whiteBackground">#FFFFFF</color>
     <color name="whiteText">#ffffff</color>
-    <!-- From: file:/C:/Users/user/Documents/GitHub/Spray/dropboxChooserSDK/src/main/res/values/dimen.xml -->
+    <!-- From: file:/C:/Users/bahri/Documents/GitHub/Spray1.3%202/Spray1.3/Spray/dropboxChooserSDK/src/main/res/values/dimen.xml -->
     <eat-comment/>
     <dimen name="appStoreInterstitialMargin">25dp</dimen>
     <dimen name="buttonTextSize">15sp</dimen>
-    <!-- From: file:/C:/Users/user/Documents/GitHub/Spray/dropboxChooserSDK/src/main/res/values/abs__dimens.xml -->
+    <!-- From: file:/C:/Users/bahri/Documents/GitHub/Spray1.3%202/Spray1.3/Spray/dropboxChooserSDK/src/main/res/values/abs__dimens.xml -->
     <eat-comment/>
     <dimen name="dbx_action_bar_default_height">48dip</dimen>
     <dimen name="dbx_action_bar_icon_vertical_padding">8dip</dimen>
@@ -95,7 +95,7 @@
     <dimen name="dbx_dropdownitem_text_padding_right">8dip</dimen>
     <dimen name="dbx_search_view_preferred_width">320dip</dimen>
     <dimen name="dbx_search_view_text_min_width">160dip</dimen>
-    <!-- From: file:/C:/Users/user/Documents/GitHub/Spray/dropboxChooserSDK/src/main/res/values/dimen.xml -->
+    <!-- From: file:/C:/Users/bahri/Documents/GitHub/Spray1.3%202/Spray1.3/Spray/dropboxChooserSDK/src/main/res/values/dimen.xml -->
     <eat-comment/>
     <dimen name="fileChooserButtonLeft">2dp</dimen>
     <dimen name="fileChooserButtonRight">2dp</dimen>
@@ -105,10 +105,10 @@
     <dimen name="fileChooserPaddingRight">8dp</dimen>
     <dimen name="fileChooserPaddingTop">12dp</dimen>
     <dimen name="fileChooserTitleText">20sp</dimen>
-    <!-- From: file:/C:/Users/user/Documents/GitHub/Spray/dropboxChooserSDK/src/main/res/values/abs__dimens.xml -->
+    <!-- From: file:/C:/Users/bahri/Documents/GitHub/Spray1.3%202/Spray1.3/Spray/dropboxChooserSDK/src/main/res/values/abs__dimens.xml -->
     <eat-comment/>
     <integer name="dbx_max_action_buttons">2</integer>
-    <!-- From: file:/C:/Users/user/Documents/GitHub/Spray/dropboxChooserSDK/src/main/res/values/strings.xml -->
+    <!-- From: file:/C:/Users/bahri/Documents/GitHub/Spray1.3%202/Spray1.3/Spray/dropboxChooserSDK/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="dbx_install">Install Dropbox</string>
     <string name="dbx_install_button_cancel">Cancel</string>
@@ -119,7 +119,7 @@
     <string name="dbx_update_button_ok">Update</string>
     <string name="dbx_update_main">Please Update the Dropbox App</string>
     <string name="dbx_update_sub">With the new Dropbox app, you can access all your stuff in your favorite apps, like this one!</string>
-    <!-- From: file:/C:/Users/user/Documents/GitHub/Spray/dropboxChooserSDK/src/main/res/values/styles.xml -->
+    <!-- From: file:/C:/Users/bahri/Documents/GitHub/Spray1.3%202/Spray1.3/Spray/dropboxChooserSDK/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--

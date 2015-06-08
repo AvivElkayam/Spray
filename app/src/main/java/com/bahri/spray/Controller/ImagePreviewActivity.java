@@ -15,11 +15,7 @@ import android.widget.ImageView;
 
 import com.bahri.spray.Model.MyModel;
 import com.bahri.spray.R;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class ImagePreviewActivity extends ActionBarActivity {
@@ -33,35 +29,10 @@ public class ImagePreviewActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_image_preview);
         initViews();
-       // image = BitmapFactory.decodeByteArray(getIntent().getByteArrayExtra("imageByteArray"), 0, getIntent().getByteArrayExtra("imageByteArray").length);
+        image = BitmapFactory.decodeByteArray(
+                getIntent().getByteArrayExtra("imageByteArray"), 0, getIntent().getByteArrayExtra("imageByteArray").length);
 
-        //image = (Bitmap) getIntent().getParcelableExtra("imageByteArray");
-        //image = loadImageFromStorage(getIntent().getStringExtra("path"));
-
-        Picasso.with(getApplicationContext())
-                .load(getIntent().getStringExtra("path"))
-                .centerCrop()
-                .into(imageView);
-
-        //imageView.setImageBitmap(image);
-        int i =8;
-    }
-
-    private Bitmap loadImageFromStorage(String path)
-    {
-        String str = path;
-        Bitmap b = null;
-        try {
-            File f=new File(path);
-            b = BitmapFactory.decodeStream(new FileInputStream(f));
-
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-
-        }
-        return  b;
+        imageView.setImageBitmap(image);
     }
 
     private void initViews() {
