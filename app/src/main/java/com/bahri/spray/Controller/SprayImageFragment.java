@@ -1,5 +1,7 @@
 package com.bahri.spray.Controller;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -35,6 +37,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 /**
@@ -45,6 +48,7 @@ public class SprayImageFragment extends Fragment {
     ArrayList<String> cellTitleArrayList;
     SprayImageArrayListAdapter adapter;
     ImageView imageView;
+    private Context context;
     int[] images = {
             R.drawable.takepic_icon29,
             R.drawable.gallery_icon29,
@@ -141,7 +145,7 @@ public class SprayImageFragment extends Fragment {
                             bitmapOptions);
 //
 
-                    imageView.setImageBitmap(bitmap);
+                    //imageView.setImageBitmap(bitmap);
                     putBitmapToIntentAndStartActivity(bitmap);
                     String path = android.os.Environment
                             .getExternalStorageDirectory()
@@ -182,6 +186,15 @@ public class SprayImageFragment extends Fragment {
 
     }
 
+    public void TransformImages(File file){
+
+        Picasso.with(context)
+                .load(file)
+                .resize(50, 50);
+
+
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -194,6 +207,7 @@ public class SprayImageFragment extends Fragment {
        listView = (ListView)getActivity().findViewById(R.id.spray_image_list_view);
        listView.setAdapter(adapter);
         imageView = (ImageView)getActivity().findViewById(R.id.spray_image_image);
+        context = getActivity().getApplicationContext();
     }
 
     private void initListTitleList() {
@@ -208,16 +222,54 @@ public class SprayImageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return  inflater.inflate(R.layout.fragment_spray_image_layout, container, false);
     }
+
+    private String saveToInternalSorage(Bitmap bitmapImage){
+        ContextWrapper cw = new ContextWrapper(getActivity().getApplicationContext());
+        // path to /data/data/yourapp/app_data/Spray
+        File directory = cw.getDir("Spray", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,String.valueOf(System.currentTimeMillis()) + ".jpg");
+
+        FileOutputStream fos = null;
+        try {
+
+            fos = new FileOutputStream(mypath);
+
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       // return directory.getAbsolutePath();
+        return mypath.getAbsolutePath();
+    }
+
+
     private void putBitmapToIntentAndStartActivity(Bitmap bitmap)
     {
         Intent i = new Intent(getActivity(), ImagePreviewActivity.class);
         //Bitmap b=scaleDown(bitmap,300,true); // your bitmap
-        Bitmap b=bitmap;
-        ByteArrayOutputStream bs = new ByteArrayOutputStream();
+        Bitmap b=scaleDown(bitmap, 640, false);
+        //ByteArrayOutputStream bs = new ByteArrayOutputStream();
  //       boolean compress = b.compress(Bitmap.CompressFormat.PNG, 100, bs);
-        i.putExtra("imageByteArray", bs.toByteArray());
-        i.putStringArrayListExtra("usersIndex",((SprayMediaActivity)getActivity()).getChosenUsersIDs());
-        MyModel.getInstance().sendImageToUsers(((SprayMediaActivity)getActivity()).getChosenUsersIDs(), bitmap);
+
+//calculate how many bytes our image consists of.
+//        int bytes = b.getByteCount();
+//or we can calculate bytes this way. Use a different value than 4 if you don't use 32bit images.
+//int bytes = b.getWidth()*b.getHeight()*4;
+
+//        ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
+//        b.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
+//
+//        byte[] array = buffer.array(); //Get the underlying array containing the data.
+//
+
+        String path = saveToInternalSorage(bitmap);
+       // i.putExtra("imageByteArray", b);
+        i.putExtra("path",path);
+        i.putStringArrayListExtra("usersIndex", ((SprayMediaActivity) getActivity()).getChosenUsersIDs());
+        //MyModel.getInstance().sendImageToUsers(((SprayMediaActivity)getActivity()).getChosenUsersIDs(), b);
         startActivity(i);
 
 
@@ -225,8 +277,8 @@ public class SprayImageFragment extends Fragment {
     public static Bitmap scaleDown(Bitmap realImage, float maxImageSize,
                                    boolean filter) {
         float ratio = Math.min(
-                (float) maxImageSize / realImage.getWidth(),
-                (float) maxImageSize / realImage.getHeight());
+                 maxImageSize / realImage.getWidth(),
+                 maxImageSize / realImage.getHeight());
         int width = Math.round((float) ratio * realImage.getWidth());
         int height = Math.round((float) ratio * realImage.getHeight());
 

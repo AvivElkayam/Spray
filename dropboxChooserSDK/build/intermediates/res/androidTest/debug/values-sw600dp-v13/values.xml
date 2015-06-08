@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/bahri/Documents/GitHub/Spray1.3%202/Spray1.3/Spray/dropboxChooserSDK/build/intermediates/bundles/debug/res/values-sw600dp-v13/values.xml -->
+    <!-- From: file:/C:/Users/user/Documents/GitHub/Spray/dropboxChooserSDK/build/intermediates/bundles/debug/res/values-sw600dp-v13/values.xml -->
     <eat-comment/>
     <dimen name="dbx_action_bar_default_height">56dip</dimen>
     <dimen name="dbx_action_bar_icon_vertical_padding">4dip</dimen>
