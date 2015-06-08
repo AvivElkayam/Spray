@@ -45,6 +45,7 @@ public class SprayImageFragment extends Fragment {
     ArrayList<String> cellTitleArrayList;
     SprayImageArrayListAdapter adapter;
     ImageView imageView;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     int[] images = {
             R.drawable.takepic_icon29,
             R.drawable.gallery_icon29,
@@ -79,10 +80,15 @@ public class SprayImageFragment extends Fragment {
                         @Override
                         public void onClick(View v) {
 
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                            startActivityForResult(intent, 1);
+//                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                            File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+//                            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+//                            startActivityForResult(intent, 1);
+
+                            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                            }
 
                         }
                     });
@@ -126,45 +132,11 @@ public class SprayImageFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
             if (requestCode == 1) {
-                //from camera
-                File f = new File(Environment.getExternalStorageDirectory().toString());
-                for (File temp : f.listFiles()) {
-                    if (temp.getName().equals("temp.jpg")) {
-                        f = temp;
-                        break;
-                    }
-                }
-                try {
-                    Bitmap bitmap;
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-                            bitmapOptions);
-//
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    putBitmapToIntentAndStartActivity(imageBitmap);
+                   // mImageView.setImageBitmap(imageBitmap);
 
-                    imageView.setImageBitmap(bitmap);
-                    //putBitmapToIntentAndStartActivity(bitmap);
-                    String path = android.os.Environment
-                            .getExternalStorageDirectory()
-                            + File.separator
-                            + "Phoenix" + File.separator + "default";
-                    f.delete();
-                    OutputStream outFile = null;
-                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-                    try {
-                        outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outFile);
-                        outFile.flush();
-                        outFile.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             } else if (requestCode == 2) {
 
                 Uri selectedImage = data.getData();

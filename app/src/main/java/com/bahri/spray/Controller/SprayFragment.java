@@ -57,7 +57,7 @@ public class SprayFragment extends Fragment implements LocationListener {
     ProgressBar progressBar;
     String myBSSID;
     WifiManager mainWifiObj;
-    RippleBackground rippleBackground;
+    //RippleBackground rippleBackground;
 
 //    private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
 //        @Override
@@ -124,7 +124,7 @@ public class SprayFragment extends Fragment implements LocationListener {
     {
 //        if(progressBar.isShowing())
 //        progressBar.dismiss();
-        rippleBackground.stopRippleAnimation();
+       // rippleBackground.stopRippleAnimation();
 
         progressBar.setVisibility(View.GONE);
         closeUsersTextView.setText(MyModel.discoverdUsers.size() + " People around you");
@@ -195,7 +195,7 @@ public class SprayFragment extends Fragment implements LocationListener {
             MyModel.getInstance().updateLocation(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
 
         }
-        rippleBackground = (RippleBackground)getActivity().findViewById(R.id.cool_progress_bar);
+        //rippleBackground = (RippleBackground)getActivity().findViewById(R.id.cool_progress_bar);
         usersLinearLayout = (LinearLayout)getActivity().findViewById(R.id.spray_users_linear_layout);
         progressBar = (ProgressBar)getActivity().findViewById(R.id.spray_progress_bar);
         closeUsersTextView = (TextView)getActivity().findViewById(R.id.close_users_text_view);
@@ -216,9 +216,9 @@ public class SprayFragment extends Fragment implements LocationListener {
             public void onClick(View v) {
                 usersLinearLayout.removeAllViews();
                 MyModel.discoverdUsers.clear();
-                getUsersConnectedToMyWifi();
+//                //getUsersConnectedToMyWifi();
                 //getCloseUsersByGPS();
-                //getCloseUsersByBluetooth();
+                getCloseUsersByBluetooth();
 
 
             }
@@ -282,9 +282,9 @@ public class SprayFragment extends Fragment implements LocationListener {
     }
     private void getUsersConnectedToMyWifi()
     {
-        ImageView imageView=(ImageView)getActivity().findViewById(R.id.centerImage);
+        //ImageView imageView=(ImageView)getActivity().findViewById(R.id.centerImage);
 
-                rippleBackground.startRippleAnimation();
+                //rippleBackground.startRippleAnimation();
 
 
 
