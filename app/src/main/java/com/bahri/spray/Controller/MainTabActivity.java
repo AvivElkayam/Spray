@@ -54,10 +54,11 @@ public class MainTabActivity extends ActionBarActivity {
                     @Override
                     public void done(SprayUser user) {
                         if (user != null){
+                            user.setProvider(SprayUser.PROVIDER_BT);
                             MyModel.getInstance().addCloseUser(user);
+                            Log.w("disocer", "discoverd user" + user.getUserName());
                         }
                         callback.deviceFound(user);
-                        Log.w("disocer", "discoverd user" + user.getUserName());
                     }
                 });
             }

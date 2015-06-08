@@ -10,6 +10,11 @@ public class SprayUser {
     Integer majorID;
     Bitmap Image;
     float distance;
+    boolean providers[] = new boolean[3];
+    public final static int PROVIDER_BT = 0;
+    public final static int PROVIDER_WIFI = 1;
+    public final static int PROVIDER_CELL = 2;
+
     public SprayUser(String userName,String userID,Integer majorID, Bitmap image,float distance) {
         this.userName = userName;
         this.majorID = majorID;
@@ -17,6 +22,7 @@ public class SprayUser {
         this.userID=userID;
         this.distance=distance;
     }//
+
 
     public float getDistance() {
         return distance;
@@ -56,5 +62,19 @@ public class SprayUser {
 
     public void setImage(Bitmap image) {
         Image = image;
+    }
+
+    public boolean isProviderBT() {
+        return providers[PROVIDER_BT];
+    }
+    public boolean isProviderWIFI() {
+        return providers[PROVIDER_WIFI];
+    }
+    public boolean isProviderCELL() {
+        return providers[PROVIDER_CELL];
+    }
+
+    public void setProvider(int provider) {
+        providers[provider] = true;
     }
 }

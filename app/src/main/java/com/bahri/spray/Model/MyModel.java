@@ -25,12 +25,21 @@ public class MyModel {
         return ourInstance;
     }
 
+    SprayUser localUser = null;
     private MyModel() {
         model = new ParseModel();
     }
 
     public void addCloseUser(SprayUser user) {
+        model.addCloseUser(user);
         discoverdUsers.add(user);
+    }
+
+    public SprayUser getCurrentUser() {
+        if (localUser == null){
+            localUser = model.getCurrentUser();
+        }
+        return localUser;
     }
 
     public interface GetSprayUserCallback{
@@ -68,6 +77,10 @@ public class MyModel {
         public void getCloseUserByBluetooth(String macAddress);
 
         void getBTUserDetails(String macAddress, GetSprayUserCallback callback);
+
+        void addCloseUser(SprayUser user);
+
+        SprayUser getCurrentUser();
     }
 
     public  void LoginToSpray(String userName, String password){

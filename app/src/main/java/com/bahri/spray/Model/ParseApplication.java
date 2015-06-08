@@ -20,12 +20,8 @@ public class ParseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-
-
         // Add your initialization code here
         //Parse.initialize(this,"k9KGqEYPv4nMyVSXg84Vc6huhuGUeVJ6B0ngD369", "DktWRLudyfxfK9w1Dc2ykBeYLe32Yiv5Qi7zzECy");
-
             Parse.initialize(this, "k9KGqEYPv4nMyVSXg84Vc6huhuGUeVJ6B0ngD369", "DktWRLudyfxfK9w1Dc2ykBeYLe32Yiv5Qi7zzECy");
             ParseInstallation installation = ParseInstallation.getCurrentInstallation();
             if(ParseUser.getCurrentUser()!=null)

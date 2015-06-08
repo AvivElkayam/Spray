@@ -705,4 +705,31 @@ public class ParseModel implements MyModel.ModelInterface {
             }
         });
     }
+
+    @Override
+    public void addCloseUser(SprayUser user) {
+        ParseObject proximity = new ParseObject("proximity");
+        proximity.put("user1", MyModel.getInstance().getCurrentUser().getUserID());
+        proximity.put("user2", user.getUserID());
+        int provider = 0;
+        if (user.isProviderBT()){
+            provider = provider | 1;
+        }
+        if (user.isProviderWIFI()){
+            provider = provider | 2;
+        }
+        if (user.isProviderCELL()){
+            provider = provider | 4;
+        }
+        proximity.put("provider",provider);
+        proximity.put("distance",user.getDistance());
+        proximity.saveInBackground();
+    }
+
+    @Override
+    public SprayUser getCurrentUser() {
+        ParseUser user = ParseUser.getCurrentUser();
+        SprayUser sprayUser = new SprayUser((String) user.get("username"), user.getObjectId(), (Integer) user.get(AppConstants.USER_MAJOR_ID), null, 0);
+        return sprayUser;
+    }
 }
