@@ -29,6 +29,16 @@ public class MyModel {
         model = new ParseModel();
     }
 
+    public void addCloseUser(SprayUser user) {
+        discoverdUsers.add(user);
+    }
+
+    public interface GetSprayUserCallback{
+        public void done(SprayUser user);
+    }
+    public void getBTUserDetails(String macAddress, final GetSprayUserCallback callback) {
+        model.getBTUserDetails(macAddress,callback);
+    }
 
 
     public interface ModelInterface
@@ -56,10 +66,11 @@ public class MyModel {
         //bluetooth
         public void updateBluetoothMACAddress(String macAddress);
         public void getCloseUserByBluetooth(String macAddress);
+
+        void getBTUserDetails(String macAddress, GetSprayUserCallback callback);
     }
 
     public  void LoginToSpray(String userName, String password){
-
         model.LoginToSpray(userName, password);
     }
 
@@ -72,7 +83,8 @@ public class MyModel {
     }
 
     public void setSprayFragment(SprayFragment fragment)
-    {}
+    {
+    }
     public void setCurrentMediaFragment(CurrentMediaFragment currentMediaFragment)
     {
         model.setCurrentMediaFragment(currentMediaFragment);

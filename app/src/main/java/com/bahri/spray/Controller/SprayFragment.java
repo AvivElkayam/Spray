@@ -49,14 +49,70 @@ import java.util.UUID;
  */
 public class SprayFragment extends Fragment implements LocationListener {
     LocationManager locationManager;
-    TextView locationTextView,closeUsersTextView;
+    TextView locationTextView, closeUsersTextView;
     Geocoder geocoder;
     String locationText = "My Location";
-    Button sprayButton,scanButton;
+    Button sprayButton, scanButton;
     LinearLayout usersLinearLayout;
     ProgressBar progressBar;
     String myBSSID;
     WifiManager mainWifiObj;
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        getActivity().setTitle("Spray");
+        View view = inflater.inflate(R.layout.spray_fragment_layout, container, false);
+
+//        locationTextView = (TextView) getActivity().findViewById(R.id.location_text_view_id);
+//        String locationProvider = LocationManager.GPS_PROVIDER;
+//        Location lastKnownLocation = getLastKnownLocation();
+//        if(lastKnownLocation!=null) {
+//            updateLocationTextView(lastKnownLocation);
+//            MyModel.getInstance().updateLocation(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
+//        }
+
+        usersLinearLayout = (LinearLayout) view.findViewById(R.id.spray_users_linear_layout);
+        progressBar = (ProgressBar) view.findViewById(R.id.spray_progress_bar);
+        closeUsersTextView = (TextView) view.findViewById(R.id.close_users_text_view);
+
+        closeUsersTextView.setText(MyModel.discoverdUsers.size() + " People around you");
+
+        sprayButton = (Button) view.findViewById(R.id.spray_to_button);
+        sprayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SprayToActivity.class);
+                startActivity(intent);
+                // mBluetoothAdapter.stopLeScan(leScanCallback);
+            }
+        });
+
+        scanButton = (Button) view.findViewById(R.id.scan_button);
+        scanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                usersLinearLayout.removeAllViews();
+                MyModel.discoverdUsers.clear();
+                getCloseUsersByBluetooth();
+            }
+        });
+
+
+        Button cellularCell = (Button) view.findViewById(R.id.cellular_cell_button);
+        cellularCell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CellularCellActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
+        return view;
+    }
+
+
     //RippleBackground rippleBackground;
 
 //    private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
@@ -84,19 +140,16 @@ public class SprayFragment extends Fragment implements LocationListener {
 //        }
 //    };
 
-    private boolean checkIfUserExistInLocalArray(Integer id)
-    {
-        for(Integer id1 :MyModel.discoverdUsersIDSLocalArray)
-        {
-            if(id1==id)
-            {
+    private boolean checkIfUserExistInLocalArray(Integer id) {
+        for (Integer id1 : MyModel.discoverdUsersIDSLocalArray) {
+            if (id1 == id) {
                 return true;
             }
         }
         return false;
     }
 
-//    public void startScanAndTransmit()
+    //    public void startScanAndTransmit()
 //    {
 //        UUID[] uuids = new UUID[1];
 //        uuids[0] = UUID.fromString("11DA3FD1-7E10-41C1-B16F-4430B506CDE7");
@@ -120,51 +173,28 @@ public class SprayFragment extends Fragment implements LocationListener {
 ////            }
 ////        }.start();
 //    }
-    public void updateCloseUsersTextView()
-    {
-//        if(progressBar.isShowing())
-//        progressBar.dismiss();
-       // rippleBackground.stopRippleAnimation();
 
-        progressBar.setVisibility(View.GONE);
-        closeUsersTextView.setText(MyModel.discoverdUsers.size() + " People around you");
-        usersLinearLayout.removeAllViews();
-        for(SprayUser user:MyModel.getInstance().discoverdUsers)
-        {
-            usersLinearLayout.addView(createUserCellInScrollView(user));
-        }
 
-    }
-
-    public View createUserCellInScrollView(SprayUser user)
-    {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.spray_fragment_scroll_custom_view, usersLinearLayout,false);
-        TextView textView = (TextView)view.findViewById(R.id.spray_scroll_view_text_view);
-        ImageView imageView = (ImageView)view.findViewById(R.id.spray_scroll_view_image_view);
+    public View createUserCellInScrollView(SprayUser user) {
+        View view = getActivity().getLayoutInflater().inflate(R.layout.spray_fragment_scroll_custom_view, usersLinearLayout, false);
+        TextView textView = (TextView) view.findViewById(R.id.spray_scroll_view_text_view);
+        ImageView imageView = (ImageView) view.findViewById(R.id.spray_scroll_view_image_view);
 
         textView.setText(user.getUserName());
-        if(user.getImage()==null)
-        {
+        if (user.getImage() == null) {
             imageView.setBackground(getResources().getDrawable(R.drawable.group));
-          //  imageView.set
+            //  imageView.set
             //imageView.setIma
 
-        }
-        else
-        {
+        } else {
             imageView.setBackground(new BitmapDrawable(user.getImage()));
 
         }
         return view;
     }
-    private ActionBar actionBar;
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        getActivity().setTitle("Spray");
-        return inflater.inflate(R.layout.spray_fragment_layout,container,false);
-    }
+    private ActionBar actionBar;
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -172,70 +202,25 @@ public class SprayFragment extends Fragment implements LocationListener {
 
         initWifiManger();
         initLocation();
-        initViews();
 
         //MyModel.getInstance().deleteRelations();
         //textView = (TextView)getActivity().findViewById(R.id.testBTtextView);
-       // initBluetooth();
+        // initBluetooth();
 
         getActivity().setTitleColor(Color.WHITE);
 
         Log.w("myApp", "started scanning");
 
-       // getCloseUsersByGPS();
+        // getCloseUsersByGPS();
     }
 
-    public void initViews()
-    {
-        locationTextView = (TextView) getActivity().findViewById(R.id.location_text_view_id);
-        String locationProvider = LocationManager.GPS_PROVIDER;
-        Location lastKnownLocation = getLastKnownLocation();
-        if(lastKnownLocation!=null) {
-            updateLocationTextView(lastKnownLocation);
-            MyModel.getInstance().updateLocation(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
+    public void initViews() {
 
-        }
-        //rippleBackground = (RippleBackground)getActivity().findViewById(R.id.cool_progress_bar);
-        usersLinearLayout = (LinearLayout)getActivity().findViewById(R.id.spray_users_linear_layout);
-        progressBar = (ProgressBar)getActivity().findViewById(R.id.spray_progress_bar);
-        closeUsersTextView = (TextView)getActivity().findViewById(R.id.close_users_text_view);
-        closeUsersTextView.setText(MyModel.discoverdUsers.size() + " People around you");
-        sprayButton = (Button)getActivity().findViewById(R.id.spray_to_button);
-        sprayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SprayToActivity.class);
-                startActivity(intent);
-
-               // mBluetoothAdapter.stopLeScan(leScanCallback);
-            }
-        });
-        scanButton = (Button)getActivity().findViewById(R.id.scan_button);
-        scanButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                usersLinearLayout.removeAllViews();
-                MyModel.discoverdUsers.clear();
-//                //getUsersConnectedToMyWifi();
-                //getCloseUsersByGPS();
-                getCloseUsersByBluetooth();
-
-
-            }
-        });
-        Button cellularCell = (Button)getActivity().findViewById(R.id.cellular_cell_button);
-        cellularCell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),CellularCellActivity.class);
-                getActivity().startActivity(intent);
-            }
-        });
 
     }
 
-    private void initWifiManger()
-    {      mainWifiObj = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
+    private void initWifiManger() {
+        mainWifiObj = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
 
 
 //        WifiScanReceiver wifiReciever = new WifiScanReceiver();
@@ -246,11 +231,9 @@ public class SprayFragment extends Fragment implements LocationListener {
         WifiInfo d = mainWifiObj.getConnectionInfo();
         myBSSID = d.getBSSID();
 
-        if(myBSSID==null) {
+        if (myBSSID == null) {
             MyModel.getInstance().updateWifi("nowifi");
-        }
-        else
-        {
+        } else {
             MyModel.getInstance().updateWifi(myBSSID);
         }
 //        String d2 =s2  ;
@@ -263,32 +246,32 @@ public class SprayFragment extends Fragment implements LocationListener {
             public void onReceive(Context context, Intent intent) {
                 initWifiConnectionEvents(intent);
             }
-        }, intentFilter);}
-    private void initWifiConnectionEvents(Intent intent)
-    {
+        }, intentFilter);
+    }
+
+    private void initWifiConnectionEvents(Intent intent) {
         final String action = intent.getAction();
 //        if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
-            if (intent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false)){
-                //do stuff        WifiInfo d = mainWifiObj.getConnectionInfo();
-                WifiInfo d = mainWifiObj.getConnectionInfo();
-                myBSSID = d.getBSSID();
-                MyModel.getInstance().updateWifi(myBSSID);
-            } else {
-                // wifi connection was lost
-                MyModel.getInstance().updateWifi("nowifi");
+        if (intent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false)) {
+            //do stuff        WifiInfo d = mainWifiObj.getConnectionInfo();
+            WifiInfo d = mainWifiObj.getConnectionInfo();
+            myBSSID = d.getBSSID();
+            MyModel.getInstance().updateWifi(myBSSID);
+        } else {
+            // wifi connection was lost
+            MyModel.getInstance().updateWifi("nowifi");
 
-            }
+        }
 
     }
-    private void getUsersConnectedToMyWifi()
-    {
+
+    private void getUsersConnectedToMyWifi() {
         //ImageView imageView=(ImageView)getActivity().findViewById(R.id.centerImage);
 
-                //rippleBackground.startRippleAnimation();
+        //rippleBackground.startRippleAnimation();
 
 
-
-        if(myBSSID!=null) {
+        if (myBSSID != null) {
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setIndeterminate(true);
             progressBar.setIndeterminateDrawable(getResources().getDrawable(R.drawable.scan_animation));
@@ -299,10 +282,10 @@ public class SprayFragment extends Fragment implements LocationListener {
         }
 
     }
-    private void getCloseUsersByGPS()
-    {
+
+    private void getCloseUsersByGPS() {
         //MyModel.getInstance().getCloseUsers();
-       // MyModel.discoverdUsers.clear();
+        // MyModel.discoverdUsers.clear();
         MyModel.getInstance().getCloseUsersByGPS();
         //MyModel.getInstance().getCloseUsersConectedToSameWifi(myBSSID);
 //                progressBar = new ProgressDialog(getActivity());
@@ -318,28 +301,31 @@ public class SprayFragment extends Fragment implements LocationListener {
         progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.scan_animation));
 
     }
-    public void initLocation()
-    {
+
+    public void initLocation() {
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-       // updateLocationTextView(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
+        // updateLocationTextView(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
 
     }
-    public SprayFragment(){}
+
+    public SprayFragment() {
+    }
+
     @Override
     public void onLocationChanged(Location location) {
 
-       // Log.w("ff","location has been updated");
+        // Log.w("ff","location has been updated");
         updateLocationTextView(location);
-        MyModel.getInstance().updateLocation(location.getLatitude(),location.getLongitude());
+        MyModel.getInstance().updateLocation(location.getLatitude(), location.getLongitude());
     }
-    public void updateLocationTextView(Location location)
-    {
+
+    public void updateLocationTextView(Location location) {
         geocoder = new Geocoder(getActivity().getApplicationContext());
         List<Address> addresses = null;
         try {
             {
-                if(location!=null) {
+                if (location != null) {
                     addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
 
                 }
@@ -348,13 +334,14 @@ public class SprayFragment extends Fragment implements LocationListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-            if(addresses!=null)
-                locationText =
-                        addresses.get(0).getThoroughfare() + ", "
-                                + addresses.get(0).getLocality();
-                locationTextView.setText(locationText);
+        if (addresses != null)
+            locationText =
+                    addresses.get(0).getThoroughfare() + ", "
+                            + addresses.get(0).getLocality();
+        locationTextView.setText(locationText);
 
     }
+
     @Override
     public void onProviderDisabled(String provider) {
         Log.d("Latitude", "disable");
@@ -362,22 +349,23 @@ public class SprayFragment extends Fragment implements LocationListener {
 
     @Override
     public void onProviderEnabled(String provider) {
-        Log.d("Latitude","enable");
+        Log.d("Latitude", "enable");
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-       Log.d("Latitude","status");
+        Log.d("Latitude", "status");
     }
 
     @Override
     public void onResume() {
         super.onResume();
         //mBluetoothAdapter.startLeScan(leScanCallback);
-        Log.w("s","OnnnnnnnResume");
+        Log.w("s", "OnnnnnnnResume");
     }
+
     private Location getLastKnownLocation() {
-        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         List<String> providers = locationManager.getProviders(true);
         Location bestLocation = null;
         for (String provider : providers) {
@@ -392,27 +380,34 @@ public class SprayFragment extends Fragment implements LocationListener {
         }
         return bestLocation;
     }
-    private void getCloseUsersByBluetooth()
-    {
-       // MyModel.discoverdUsers.clear();
-        if (!((MainTabActivity)getActivity()).getmBluetoothAdapter().isEnabled()) {
-            ((MainTabActivity)getActivity()).requestBluetoothEnable();
-        }
-        else
-        {
 
-            progressBar.setVisibility(View.VISIBLE);
-            progressBar.setIndeterminate(true);
-            progressBar.setIndeterminateDrawable(getResources().getDrawable(R.drawable.scan_animation));
-//                progressBar.setMessage("Scanning for close users...");
-//                progressBar.show();
-            progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.scan_animation));
-//            MyModel.discoverdUsers.clear();
-//            usersLinearLayout.removeAllViews();
-//            MyModel.getInstance().getCloseUserByBluetooth();
-            //l
-            ((MainTabActivity)getActivity()).startDiscovery();
-        }
+    private void getCloseUsersByBluetooth() {
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminate(true);
+        progressBar.setIndeterminateDrawable(getResources().getDrawable(R.drawable.scan_animation));
+        progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.scan_animation));
+
+        ((MainTabActivity) getActivity()).startDiscovery(new MainTabActivity.ScanCallback() {
+            @Override
+            public void deviceFound(SprayUser user) {
+                if (user != null) {
+                    usersLinearLayout.addView(createUserCellInScrollView(user));
+                    closeUsersTextView.setText(MyModel.discoverdUsers.size() + " People around you");
+                }
+            }
+        });
     }
 
+    public void updateCloseUsersTextView() {
+//        if(progressBar.isShowing())
+//        progressBar.dismiss();
+        // rippleBackground.stopRippleAnimation();
+
+        progressBar.setVisibility(View.GONE);
+        closeUsersTextView.setText(MyModel.discoverdUsers.size() + " People around you");
+        usersLinearLayout.removeAllViews();
+        for (SprayUser user : MyModel.getInstance().discoverdUsers) {
+            usersLinearLayout.addView(createUserCellInScrollView(user));
+        }
+    }
 }

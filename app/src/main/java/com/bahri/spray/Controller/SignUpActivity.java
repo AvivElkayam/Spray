@@ -70,10 +70,10 @@ public class SignUpActivity extends ActionBarActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (imageBitmap == null){
+                    imageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.group);
+                }
                 MyModel.getInstance().SignUpToSpray(userNameTextField.getText().toString(),passwordTextField.getText().toString(),emailTextField.getText().toString(),imageBitmap);
-
-
             }
         });
 

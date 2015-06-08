@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.bahri.spray.Model.MyModel;
 import com.bahri.spray.R;
+import com.bahri.spray.SprayUser;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class MainTabActivity extends ActionBarActivity {
     BluetoothAdapter mBluetoothAdapter;
     ArrayList<String> macAddressList;
     Handler mHandler = new Handler();
+
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -46,60 +48,59 @@ public class MainTabActivity extends ActionBarActivity {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-               MyModel.getInstance().getCloseUsersByBluetooth(device.getAddress());
-                //macAddressList.add(device.getAddress());
-                Log.w("disocer","discoverd "+device.getName());
-                // Add the name and address to an array adapter to show in a ListView
-                //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                //MyModel.getInstance().getCloseUsersByBluetooth(device.getAddress());
+                Log.w("disocer", "discoverd " + device.getName());
+                MyModel.getInstance().getBTUserDetails(device.getAddress(), new MyModel.GetSprayUserCallback() {
+                    @Override
+                    public void done(SprayUser user) {
+                        if (user != null){
+                            MyModel.getInstance().addCloseUser(user);
+                        }
+                        callback.deviceFound(user);
+                        Log.w("disocer", "discoverd user" + user.getUserName());
+                    }
+                });
             }
         }
     };
-    public void initBluetooth()
-    {
+
+    public void initBluetooth() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         MyModel.getInstance().updateBluetoothMACAddress(mBluetoothAdapter.getAddress());
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(mReceiver, filter);
-        Intent discoverableIntent = new
-                Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-
-
-        if(mBluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE)
-        {
+        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        if (mBluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             // (If your BTDiscoverable is this equivalent if this, you can use it)
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
             startActivity(discoverableIntent);
-
-        }
-        else
-        {
+        } else {
             /*
              * As the bluetooth is now on and the device can be connected/discovered, USER MUST START THE SERVER SITE ON DEVICE BY
              * CREATING NEW THREAD
              */
-
         }
-
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         //overridePendingTransition(R.anim.left_out_animation, R.anim.right__out_animation);
         macAddressList = new ArrayList<String>();
-        Log.w("S","main tab on create");
+        Log.w("S", "main tab on create");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(getString(R.string.orangeColor))));
         MyModel.getInstance().setMainTabActivity(this);
         setContentView(R.layout.activity_tab_test_activity);
         initTabs();
-        actionBar=getSupportActionBar();
+        actionBar = getSupportActionBar();
         setTitleColor(Color.WHITE);
         initBluetooth();
 
 
     }
-    public void chageActionBarStyle()
-    {
+
+    public void chageActionBarStyle() {
         SpannableString spannableString = new SpannableString(getString(R.string.app_name));
         spannableString.setSpan(new ForegroundColorSpan(Color.RED), 0, spannableString.toString()
                 .length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -107,18 +108,18 @@ public class MainTabActivity extends ActionBarActivity {
         // getSupportActionBar().setIcon(R.drawable.ic_launcher);
         getSupportActionBar().setTitle(spannableString);
     }
-//    public void startScanAndTransmit()
+
+    //    public void startScanAndTransmit()
 //    {
 //        ( (SprayFragment)getSupportFragmentManager().findFragmentByTag("SprayFragment")).startScanAndTransmit();
 //    }
-    public void updateCloseUsersTextView()
-    {
-        ( (SprayFragment)getSupportFragmentManager().findFragmentByTag("SprayFragment")).updateCloseUsersTextView();
+    public void updateCloseUsersTextView() {
+        ((SprayFragment) getSupportFragmentManager().findFragmentByTag("SprayFragment")).updateCloseUsersTextView();
     }
-    private void initTabs()
-    {
 
-        mTabHost = (FragmentTabHost)findViewById(R.id.tabhost1);
+    private void initTabs() {
+
+        mTabHost = (FragmentTabHost) findViewById(R.id.tabhost1);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
 
@@ -130,8 +131,7 @@ public class MainTabActivity extends ActionBarActivity {
                 GroupFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec("SettingsFragment").setIndicator("", getResources().getDrawable(R.drawable.settings)),
                 SettingsFragment.class, null);
-        for(int i=0;i<mTabHost.getTabWidget().getChildCount();i++)
-        {
+        for (int i = 0; i < mTabHost.getTabWidget().getChildCount(); i++) {
             mTabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#E0E0E0")); //unselected
         }
         mTabHost.getTabWidget().getChildAt(mTabHost.getCurrentTab()).setBackgroundDrawable(getResources().getDrawable(R.drawable.selected_tab));
@@ -140,15 +140,14 @@ public class MainTabActivity extends ActionBarActivity {
             @Override
             public void onTabChanged(String tabId) {
 
-                for(int i=0;i<mTabHost.getTabWidget().getChildCount();i++)
-                {
+                for (int i = 0; i < mTabHost.getTabWidget().getChildCount(); i++) {
                     mTabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#E0E0E0")); //unselected
                 }
                 mTabHost.getTabWidget().getChildAt(mTabHost.getCurrentTab()).setBackgroundDrawable(getResources().getDrawable(R.drawable.selected_tab));
 
             }
         });
-       // mTabHost.setCurrentTab(getIntent().getIntExtra("tab",0));
+        // mTabHost.setCurrentTab(getIntent().getIntExtra("tab",0));
     }
 
     @Override
@@ -172,15 +171,24 @@ public class MainTabActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void upateWifiBSSID(String s)
-    {
+
+    public void upateWifiBSSID(String s) {
         MyModel.getInstance().updateWifi(s);
     }
-    public void requestBluetoothEnable()
-    {
-        int REQUEST_ENABLE_BT = 3;
+
+    final static int REQUEST_ENABLE_BT = 3;
+    public void requestBluetoothEnable() {
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ENABLE_BT) {
+            if (resultCode == RESULT_OK) {
+                mBluetoothAdapter.startDiscovery();
+            }
+        }
     }
 
     public BluetoothAdapter getmBluetoothAdapter() {
@@ -190,10 +198,18 @@ public class MainTabActivity extends ActionBarActivity {
     public void setmBluetoothAdapter(BluetoothAdapter mBluetoothAdapter) {
         this.mBluetoothAdapter = mBluetoothAdapter;
     }
-    public void startDiscovery()
-    {
-        mBluetoothAdapter.startDiscovery();
 
+    public interface ScanCallback{
+        public void deviceFound(SprayUser user);
+    }
 
+    ScanCallback callback;
+    public void startDiscovery(ScanCallback callback) {
+        this.callback = callback;
+        if (!getmBluetoothAdapter().isEnabled()) {
+            requestBluetoothEnable();
+        } else {
+            mBluetoothAdapter.startDiscovery();
+        }
     }
 }
