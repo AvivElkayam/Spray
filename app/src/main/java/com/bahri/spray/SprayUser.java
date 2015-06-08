@@ -16,7 +16,7 @@ public class SprayUser {
         Image = image;
         this.userID=userID;
         this.distance=distance;
-    }
+    }//
 
     public float getDistance() {
         return distance;
