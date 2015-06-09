@@ -25,6 +25,7 @@ public class MyModel {
         return ourInstance;
     }
 
+
     SprayUser localUser = null;
     private MyModel() {
         model = new ParseModel();
