@@ -732,4 +732,29 @@ public class ParseModel implements MyModel.ModelInterface {
         SprayUser sprayUser = new SprayUser((String) user.get("username"), user.getObjectId(), (Integer) user.get(AppConstants.USER_MAJOR_ID), null, 0);
         return sprayUser;
     }
+
+
+    public Bitmap getUserBitmap(String userId)
+    {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        ParseUser user = null;
+        try {
+            user = query.get(userId);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Bitmap bitmap;
+        ParseFile file = (ParseFile)user.get(AppConstants.USER_IMAGE);
+
+        try {
+            byte[] bytes = file.getData();
+            bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            bitmap = null;
+        }
+
+        return bitmap;
+    }
 }

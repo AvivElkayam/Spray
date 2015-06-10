@@ -3,6 +3,7 @@ package com.bahri.spray.Model;
 
 import android.bluetooth.BluetoothDevice;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 
 import com.bahri.spray.Controller.CurrentMediaFragment;
 import com.bahri.spray.Controller.LoginActivity;
@@ -50,6 +51,26 @@ public class MyModel {
         model.getBTUserDetails(macAddress,callback);
     }
 
+    public interface getUserImageCllback{
+        public void done(Bitmap image);
+    }
+    public void getUserImage(final SprayUser user, final getUserImageCllback callback) {
+        class AsynchGet extends AsyncTask<String,String,String> {
+            Bitmap image;
+            @Override
+            protected String doInBackground(String... strings) {
+                image = model.getUserBitmap(user.getUserID());
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String arg){
+                callback.done(image);
+            }
+        }
+        AsynchGet async = new AsynchGet();
+        async.execute("");
+    }
 
     public interface ModelInterface
     {
@@ -82,6 +103,7 @@ public class MyModel {
         void addCloseUser(SprayUser user);
 
         SprayUser getCurrentUser();
+        public Bitmap getUserBitmap(String userId);
     }
 
     public  void LoginToSpray(String userName, String password){

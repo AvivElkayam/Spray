@@ -393,6 +393,12 @@ public class SprayFragment extends Fragment implements LocationListener {
                 if (user != null) {
                     usersLinearLayout.addView(createUserCellInScrollView(user));
                     closeUsersTextView.setText(MyModel.discoverdUsers.size() + " People around you");
+                    MyModel.getInstance().getUserImage(user,new MyModel.getUserImageCllback() {
+                        @Override
+                        public void done(Bitmap image) {
+
+                        }
+                    });
                 }
             }
         });
